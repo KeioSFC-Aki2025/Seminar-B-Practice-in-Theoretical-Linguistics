@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akitaka Yamada\'s Website</title>
+    <linkpreconnect="https://fonts.googleapis.com">
+    <linkpreconnect="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定 --- */
+        :root {
+            --font-family: \'Zen Maru Gothic\', sans-serif;
+            --bg-color: #fcefee;
+            --text-color: #5a4a42;
+            --spring-color: #ffb7c5; --spring-bg: #fff0f5;
+            --summer-color: #4fc3f7; --summer-bg: #e1f5fe;
+            --autumn-color: #ff8c00; --autumn-bg: #fffaf0;
+            --winter-color: #87ceeb; --winter-bg: #f0f8ff;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 0; line-height: 1.6;
+            background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
+        }
+        header {
+            text-align: center; padding: 2rem 1rem;
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-bottom: 3px dotted var(--spring-color);
+        }
+        .site-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: #d35400; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .site-subtitle { font-size: 1.2rem; margin-top: 0.5rem; color: #7f8c8d; }
+        nav { margin-top: 1.5rem; }
+        nav a {
+            text-decoration: none; color: var(--text-color); font-weight: bold;
+            margin: 0 10px; padding: 8px 16px; border-radius: 20px;
+            background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        nav a:hover { background-color: var(--spring-color); color: white; transform: translateY(-2px); }
+        .container {
+            max-width: 1200px; margin: 3rem auto; padding: 0 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+        }
+        .term-card {
+            border-radius: 20px; padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+        }
+        .term-card h2 { font-size: 1.8rem; margin-top: 0; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .card-content { background-color: #ffffff; border-radius: 15px; padding: 1.5rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        .card-content h3 {
+            font-size: 1.3rem; color: var(--text-color); border-left: 5px solid currentColor;
+            padding-left: 10px; margin-top: 1.5rem; margin-bottom: 1rem;
+        }
+        .card-content h3:first-child { margin-top: 0; }
+        .divider { border: none; border-top: 2px dashed #ddd; margin: 1.5rem 0; }
+        ul { list-style-type: none; padding-left: 1rem; }
+        ul li { margin-bottom: 0.5rem; }
+
+        /* 季節ごとのスタイル */
+        .spring { background-color: var(--spring-bg); border: 3px solid var(--spring-color); }
+        .spring h2, .spring h3 { color: #e74c3c; }
+        .spring::before { content: "🌸"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+        .spring::after { content: "🎏"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; transform: rotate(30deg); }
+
+        .summer { background-color: var(--summer-bg); border: 3px solid var(--summer-color); }
+        .summer h2, .summer h3 { color: #2980b9; }
+        .summer::before { content: "⛱️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+        .summer::after { content: "⛵"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; }
+
+        .autumn { background-color: var(--autumn-bg); border: 3px solid var(--autumn-color); }
+        .autumn h2, .autumn h3 { color: #d35400; }
+        .autumn::before { content: "🍁"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.9; transform: rotate(-15deg); }
+        .autumn::after { content: "🍂"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.8; transform: rotate(20deg); }
+
+        .winter { background-color: var(--winter-bg); border: 3px solid var(--winter-color); }
+        .winter h2, .winter h3 { color: #2980b9; }
+        .winter::before { content: "❄️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+        .winter::after { content: "☃️"; position: absolute; bottom: 10px; left: 20px; font-size: 2rem; opacity: 0.6; }
+
+        /* 吹き出しリスト */
+        .speech-bubble-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+        .speech-bubble {
+            background-color: #fff; border: 2px solid currentColor; border-radius: 12px;
+            padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; position: relative; top: 0;
+        }
+        .speech-bubble:hover { top: -5px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background-color: #fffdfa; }
+        .speech-bubble span { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.7; margin-top: 2px; }
+        .winter .speech-bubble { color: #3498db; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding: 0 1rem; }
+            .site-title { font-size: 2rem; }
+            nav a { margin: 5px; display: inline-block; }
+        }
+
+        /* ハガキ風モーダル */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .postcard {
+            background-color: #f4ecd8; border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            border: 2px solid #5d4037; width: 90%; max-width: 700px; padding: 50px 40px; position: relative;
+            background-image: radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(139, 69, 19, 0.08) 0%, transparent 30%);
+            box-shadow: 8px 12px 25px rgba(0,0,0,0.3); filter: sepia(0.2); transform: rotate(-1deg);
+        }
+        .photo-box { width: 130px; height: 150px; border: 2px dotted #ccc; background: #fff; padding: 8px; position: relative; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); flex-shrink: 0; transform: rotate(3deg); }
+        .postcard-header { display: flex; gap: 30px; margin-bottom: 20px; align-items: center; }
+        .header-info { flex-grow: 1; }
+        .header-name { font-family: serif; font-size: 2.2rem; color: #3e2723; margin: 0; margin-bottom: 1rem; }
+        .header-project { font-size: 1.3rem; color: #5d4037; border-bottom: 1px solid #d2b48c; padding-bottom: 5px; margin: 0; }
+        ハガキ風のモーダル（ポップアップ）をさらに温かみのある、読みやすいデザインに調整しました。
+
+ご要望通り、**「見出しと中身の距離を縮める」ことと、「自己紹介エリアを光が滲むような白いパネルで包む」**スタイルに変更します。
+
+以下のCSSの該当箇所を書き換えてください。
+
+CSSの修正箇所
+<style> タグ内の後半にある、モーダル関連のスタイルを以下のように差し替えてください。
+
+CSS
+/* --- モーダル内の余白と白い囲いの設定 --- */
+
+.postcard-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    /* 上の線との距離をギュッと縮める */
+    margin-top: 10px; 
+}
+
+.modal-section {
+    margin-top: 5px;
+    background-color: #ffffff; /* 真っ白な背景 */
+    padding: 25px;            /* 内側にゆとりを持たせる */
+    border-radius: 20px;      /* 角を丸く */
+    
+    /* ぼんやりとした温かい光の演出 */
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 
+                0 5px 15px rgba(0, 0, 0, 0.05); 
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.modal-label {
+    display: block;           /* ラベルを独立した行に */
+    color: #8d6e63;           /* 少し温かみのある茶色 */
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    margin-top: 15px;         /* 項目ごとの間隔 */
+    letter-spacing: 0.05em;
+}
+
+.modal-label:first-child {
+    margin-top: 0;            /* 最初のラベルの上の余白は不要 */
+}
+
+.modal-text {
+    display: block;           /* テキストも独立させる */
+    color: #3e2723;
+    white-space: pre-wrap;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #aaa; line-height: 1; }
+        .close-btn:hover { color: #555; }
+        @media (max-width: 600px) { .postcard-header { flex-direction: column; text-align: center; } .header-project { font-size: 1.2rem; } }
+		
+		
+		/* タブメニューのスタイル */
+.tab-menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 2rem;
+}
+.tab-button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #5d4037;
+    background: #fff;
+    color: #5d4037;
+    border-radius: 30px;
+    transition: all 0.3s;
+}
+.tab-button.active {
+    background: #5d4037;
+    color: #fff;
+}
+.tab-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="site-title">Akitaka Yamada's Website</h1>
+        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
+        <nav>
+            <a href="#">TOP</a>
+            <a href="#">PUBLICATIONS</a>
+            <a href="#">CV</a>
+            <a href="#">MEMBERS</a>
+            <a href="#">CONTACT</a>
+        </nav>
+    </header>
+
+    <main class="container">
+<main>
+<div class="tab-menu">
+<button class="tab-button active" onclick="showYear('2026', this)">2026年</button>
+<button class="tab-button " onclick="showYear('2025', this)">2025年</button>
+</div>
+<div id="year-container">
+<div id="year-2026" class="year-content container" style="display: grid;">
+
+        <section class="term-card spring">
+            <h2>Spring 2026</h2>
+            <div class="card-content">
+                <h3>■ テーマ：TBA</h3>
+                <div>TBA</div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"></div>
+                
+            </div>
+        </section>
+        <section class="term-card summer">
+            <h2>Summer 2026</h2>
+            <div class="card-content">
+                <h3>■ テーマ：TBA</h3>
+                <div>TBA</div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"></div>
+                
+            </div>
+        </section>
+        <section class="term-card autumn">
+            <h2>Fall 2026</h2>
+            <div class="card-content">
+                <h3>■ テーマ：TBA</h3>
+                <div>TBA</div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"></div>
+                
+            </div>
+        </section>
+        <section class="term-card winter">
+            <h2>Winter 2026</h2>
+            <div class="card-content">
+                <h3>■ テーマ：TBA</h3>
+                <div>TBA</div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"></div>
+                
+            </div>
+        </section></div>
+<div id="year-2025" class="year-content container" style="display: none;">
+
+        <section class="term-card spring">
+            <h2>Spring 2025</h2>
+            <div class="card-content">
+                <h3>■ テーマ：言語の変化と変異</h3>
+                <div><p>同じ人でも、その時の気分や状況でＡを選んだり、Ｂを選んだり…。人の振る舞いを『絶対にこうだ！』と決めつけるのは、とっても難しい。ことばの選択も同じ。でも、そこには、目には見えない『ついついこっちを選んじゃう法則（確率的な傾向）』があります。その傾向が変化するときに生じるのが言語変化だ、と考えられているそう。『どんな時にＡを使いたくなるのか？』『逆に、どんな時に避けてしまうのか？』言語表現の選択の不思議をじっくり探っていきましょう。</p></div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="MasayaShimoda">下田 純也</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KimiyaHirabayashi">平林君也</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="YusukeUeda">上田祐輔</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SumireKadosawa">門澤菫</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KyuriKang">姜奎里</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="MayuuKomatsu">小松真優</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="NatsukiSano">佐野夏輝</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SakuraShikata">鹿田さくら</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="YutoSawada">澤田裕翔</div>
+</div>
+                
+            </div>
+        </section>
+        <section class="term-card summer">
+            <h2>Summer 2025</h2>
+            <div class="card-content">
+                <h3>■ テーマ：意味論（初級～中級）[特プロ]</h3>
+                <div><p>春学期の授業では、意味論や語用論がどうやって形作られてきたのか、その歴史や理論の土台をじっくり学んできました。この夏は、そこでそこでは取り扱えなかった各論に一歩進んで『実践モード』に突入します！今回のテーマは、動きや状態を表す語彙アスペクト。正確に精密に現象を捉えようとしてきた先人たちの知恵と工夫を学びましょう！</p></div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SomaiyaAkterRiya">リヤ, ソマイヤ・アクテル</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KimiyaHirabayashi">平林君也</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SumireKadosawa">門澤菫</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KyuriKang">姜奎里</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="MayuuKomatsu">小松真優</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SakuraShikata">鹿田さくら</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="YusukeUeda">上田祐輔</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="YutoSawada">澤田裕翔</div>
+</div>
+                <h3>● イベント</h3><div style="white-space: pre-wrap;"><b>温泉観光地で夏合宿！</b><p>合宿：9月28日（日）～9月30日（火）</p><p>場所：熱海</p><p>合宿担当：門澤菫</p></div>
+            </div>
+        </section>
+        <section class="term-card autumn">
+            <h2>Fall 2025</h2>
+            <div class="card-content">
+                <h3>■ テーマ：動詞</h3>
+                <div><p>夏のラストは、言語学の大きな謎の一つ「自他交替」をピックアップしました。<br>
+(1) The boy broke the vase.（男の子が花瓶を割った） <br>(2) The vase broke.（花瓶が割れた）<br>
+他動詞のときは後ろ（目的語）にいた『花瓶』が、自動詞になると主語に出現！この二つ意味的にはどう違うのでしょうか？ほかにも構文が交替するパターンはたくさんあります。日本語と英語の違い、そして「人間がことばを話す仕組み」の不思議を一緒にのぞいてみましょう。</p></div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="MiyokoNakamura">中村美代子</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SomaiyaAkterRiya">リヤ, ソマイヤ・アクテル</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SakuraUshijima">牛島櫻</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SumireKadosawa">門澤菫</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KyuriKang">姜奎里</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="KimiyaHirabayashi">平林君也</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="JunsooKim">キムジュンス</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="MayuuKomatsu">小松真優</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="NatsukiSano">佐野夏輝</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="SakuraShikata">鹿田さくら</div>
+<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="YusukeUeda">上田祐輔</div>
+</div>
+                <h3>● イベント</h3><div style="white-space: pre-wrap;"><b>年忘れのハラール料理体験！</b><p>合宿：12月26日（金）</p><p>場所：β2</p><p>料理講師：Somaiya Akter Riya</p></div>
+            </div>
+        </section>
+        <section class="term-card winter">
+            <h2>Winter 2025</h2>
+            <div class="card-content">
+                <h3>■ テーマ：お休み</h3>
+                <div></div>
+                <hr class="divider">
+                <h3>◆ メンバー紹介</h3>
+                <div class="speech-bubble-list"></div>
+                
+            </div>
+        </section></div>
+
+    </main>
+
+    <div id="postcardModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="postcard" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(event)">×</span>
+            <div class="postcard-header">
+                <div class="photo-box">
+					<img id="modalPic" src="" alt="顔写真" style="width: 100%; height: 100%; object-fit: cover;">
+				</div>
+                <div class="header-info">
+    <h2 class="header-name">
+        <span id="modalName1"></span> <span id="modalName2" style="font-size: 1.2rem; margin-left: 10px; font-weight: normal;"></span> <div id="modalName3" style="font-size: 1rem; margin-top: 5px; color: #666; font-weight: normal;"></div> </h2>
+    <h3 id="modalProject" class="header-project"></h3>
+</div>
+            </div>
+            <div class="postcard-body">
+                <div class="modal-section">
+                    <div class="modal-label">自己紹介</div>
+                    <div id="modalIntro" class="modal-text"></div>
+                    <div class="modal-label">私の想い出</div>
+                    <div id="modalDesc" class="modal-text"></div>
+                    <div class="modal-label">履修を考えている人へ</div>
+                    <div id="modalAdvice" class="modal-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>const memberData = {
+    "MasayaShimoda": {
+        name1: "下田 純也",
+        name2: "Masaya Shimoda",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "KimiyaHirabayashi": {
+        name1: "平林君也",
+        name2: "Kimiya Hirabayashi",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "YusukeUeda": {
+        name1: "上田祐輔",
+        name2: "Yusuke Ueda",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "KyuriKang": {
+        name1: "姜奎里",
+        name2: "Kyuri Kang",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "SumireKadosawa": {
+        name1: "門澤菫",
+        name2: "Sumire Kadosawa",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "MayuuKomatsu": {
+        name1: "小松真優",
+        name2: "Mayuu Komatsu",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "NatsukiSano": {
+        name1: "佐野夏輝",
+        name2: "Natsuki Sano",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "SakuraShikata": {
+        name1: "鹿田さくら",
+        name2: "Sakura Shikata",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "YutoSawada": {
+        name1: "澤田裕翔",
+        name2: "Yuto Sawada",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "SomaiyaAkterRiya": {
+        name1: "リヤ, ソマイヤ・アクテル",
+        name2: "Somaiya Akter Riya",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "SakuraUshijima": {
+        name1: "牛島櫻",
+        name2: "Sakura Ushijima",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "JunsooKim": {
+        name1: "キムジュンス",
+        name2: "Junsoo Kim",
+        name3: "第1期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "MiyokoNakamura": {
+        name1: "中村美代子",
+        name2: "Miyoko Nakamura",
+        name3: "SFC研究所上席所員",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    },
+    "ChihiroSugimori": {
+        name1: "杉森千尋",
+        name2: "Chihiro Sugimori",
+        name3: "第2期生",
+        project: "自分のテーマ",
+        description: "ここに思い出が入ります。",
+        introduction: "自己紹介",
+        advice: "ここにアドバイスが入ります。",
+        pic: "",
+        color: "#3498db"
+    }
+};
+
+        // タブ切り替え関数
+        function showYear(year, btn) {
+            // すべてのコンテンツを隠す
+            document.querySelectorAll(".year-content").forEach(el => el.style.display = "none");
+            // 選択した年だけ表示（二列にするため grid を指定）
+            document.getElementById("year-" + year).style.display = "grid";
+            
+            // ボタンの見た目を更新
+            document.querySelectorAll(".tab-button").forEach(el => el.classList.remove("active"));
+            btn.classList.add("active");
+        }
+
+        const randomImageSet = [
+            "https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/noimage2.png",
+            "https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/noimage.jpg"
+        ];
+        
+        function openModal(element) {
+            const id = element.getAttribute("data-id");
+            const data = memberData[id];
+            if (!data) return;
+            document.getElementById("modalName1").textContent = data.name1 || "";
+            document.getElementById("modalName2").textContent = data.name2 || "";
+            document.getElementById("modalName3").textContent = data.name3 || "";
+            document.getElementById("modalProject").textContent = data.project || "";
+            document.getElementById("modalIntro").textContent = data.introduction;
+            document.getElementById("modalDesc").textContent = data.description;
+            document.getElementById("modalAdvice").textContent = data.advice;
+            
+            let displayPic = data.pic;
+            if (!displayPic || displayPic === "") {
+                const randomIndex = Math.floor(Math.random() * randomImageSet.length);
+                displayPic = randomImageSet[randomIndex];
+            }
+            document.getElementById("modalPic").src = displayPic;
+            if(document.getElementById("modalName1")){
+              document.getElementById("modalName1").style.color = data.color;
+            }
+            const modal = document.getElementById("postcardModal");
+            modal.style.display = "flex";
+            setTimeout(() => { modal.classList.add("active"); }, 10);
+        }
+
+        function closeModal(event) {
+            const modal = document.getElementById("postcardModal");
+            modal.classList.remove("active");
+            setTimeout(() => { modal.style.display = "none"; }, 300);
+        }
+    </script>
+</body>
+</html>
