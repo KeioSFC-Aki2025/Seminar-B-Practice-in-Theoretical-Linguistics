@@ -18,9 +18,145 @@
 
     <style>
 
-        /* --- 基本設定 --- */
+		/* --- グローバルナビゲーション用変数 --- */
 
-        :root {
+:root {
+
+  --gnav-font: 'Zen Maru Gothic', sans-serif;
+
+  --gnav-bg: #fcefee;
+
+  --gnav-text: #5a4a42;
+
+  --gnav-accent: #d35400;
+
+  --gnav-hover: #ffb7c5;
+
+}
+
+/* --- グローバルナビゲーション用CSS --- */
+
+.gnav-header {
+
+  text-align: center; padding: 2rem 1rem;
+
+  background-color: rgba(255, 255, 255, 0.7);
+
+  backdrop-filter: blur(10px);
+
+  border-bottom: 3px dotted var(--gnav-hover);
+
+  position: sticky; top: 0; z-index: 1000; /* 他の要素より上に表示 */
+
+  font-family: var(--gnav-font);
+
+  color: var(--gnav-text);
+
+  line-height: 1.8;
+
+}
+
+.gnav-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: var(--gnav-accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+
+.gnav-nav { margin-top: 1.5rem; }
+
+.gnav-nav a {
+
+  text-decoration: none; color: var(--gnav-text); font-weight: bold;
+
+  margin: 0 10px; padding: 8px 16px; border-radius: 20px;
+
+  background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  transition: all 0.3s ease; display: inline-block;
+
+}
+
+.gnav-nav a:hover { background-color: var(--gnav-hover); color: white; transform: translateY(-2px); }
+
+/* ドロップダウン */
+
+.gnav-dropdown { position: relative; display: inline-block; }
+
+.gnav-dropdown-content {
+
+  visibility: hidden; opacity: 0; position: absolute;
+
+  background-color: rgba(255, 255, 255, 0.95); 
+
+  width: max-content; white-space: nowrap;
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 15px; padding: 10px;
+
+  z-index: 1100; top: 120%; left: 50%; transform: translateX(-50%) translateY(15px); 
+
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  backdrop-filter: blur(5px); display: flex; flex-direction: column; gap: 5px;
+
+}
+
+.gnav-dropdown-content a {
+
+  margin: 0 !important; box-shadow: none !important; transform: none !important;
+
+  border-radius: 10px; padding: 10px 15px; font-size: 0.95rem; text-align: center; background-color: transparent;
+
+}
+
+.gnav-dropdown-content a:hover { background-color: var(--gnav-bg); color: var(--gnav-accent); }
+
+.gnav-dropdown:hover .gnav-dropdown-content {
+
+  visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0);
+
+}
+
+
+
+
+
+/* 言語切り替え */
+
+.lang-toggle {
+
+  font-family: var(--gnav-font); font-weight: bold; color: #fff;
+
+  background-color: var(--gnav-accent); border: none; border-radius: 20px;
+
+  padding: 8px 16px; margin-left: 15px; cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(211, 84, 0, 0.3); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+}
+
+.lang-toggle:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4); }
+
+.lang-en { display: none; }
+
+body.is-en .lang-ja { display: none; }
+
+body.is-en .lang-en { display: inline; }
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+  .gnav-title { font-size: 1.8rem; }
+
+  .gnav-nav a { margin: 5px; }
+
+}
+
+:root{
+
+    
 
             --font-family: \'Zen Maru Gothic\', sans-serif;
 
@@ -366,7 +502,7 @@
 
         
 
-<style> 
+
 
 /* モーダル全体の設定変更 */
 
@@ -1140,33 +1276,85 @@
 
 <body>
 
-    <header>
+    <div class="gnav-header">
 
-        <h1 class="site-title">Akitaka Yamada's Website</h1>
+        <span class="lang-en"><h1 class="gnav-title">Akitaka Yamada's Website</h1></span>
 
-        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
+        <span class="lang-ja"><p class="gnav-title">山田彬尭のウェブサイトへようこそ！</p></span>
 
-        <nav>
+        <div class="gnav-nav">
 
-            <a href="https://ayamada.sfc.keio.ac.jp/">TOP</a>
+            <a href="https://ayamada.sfc.keio.ac.jp/"><span class="lang-ja">ホーム</span><span class="lang-en">HOME</span></a>
 
-            <a href="https://ayamada.sfc.keio.ac.jp/publications">PUBLICATIONS</a>
+            <a href="https://ayamada.sfc.keio.ac.jp/publications"><span class="lang-ja">研究業績</span><span class="lang-en">PUBLICATIONS</span></a>
 
             <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
 
-			<a href = "https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1">TEACHING</a>
+            <div class="gnav-dropdown">
 
-            <a href="#">SEMINARS</a>
+                <a href="https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1"><span class="lang-ja">授業</span><span class="lang-en">TEACHING</span></a>
 
-            <a href="https://ayamada.sfc.keio.ac.jp/contact">CONTACT</a>
+                <div class="gnav-dropdown-content">
 
-        </nav>
+                    <a href="#"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span></a>
 
-    </header>
+                    <a href="https://keiosfc-aki2025.github.io/syntax/schedule.html"><span class="lang-ja">統語論</span><span class="lang-en">Syntax</span> (GIGA)</a>
 
-<h1 style="text-align: center;">研究会B（その１）</h1>
+                    <a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html"><span class="lang-ja">意味論・語用論<br>学部・大学院併設</span> <span class="lang-en">Semantics and Pragmatics</span></a>
 
-<h1 style="text-align: center;">理論言語学実践</h1>
+                </div>
+
+            </div>
+
+			<div class="gnav-dropdown">
+
+                <a href="https://keiosfc-aki2025.github.io/Seminar/SeminarProfile.html"><span class="lang-ja">研究会（ゼミ）</span><span class="lang-en">SEMINARS</span></a>
+
+                <div class="gnav-dropdown-content">
+
+                    <a href="https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/TeamProfile.html"><span class="lang-ja">理論言語学実践</span><span class="lang-en">Practice in Theoretical Linguistics</span></a>
+
+                    <a href="https://ayamada.sfc.keio.ac.jp/ldf2025spring"><span class="lang-ja">言語×DH×FW</span><span class="lang-en">Language, DH, and FW</span></a>
+
+                </div>
+
+            </div>
+
+            
+
+			
+
+			<div class="gnav-dropdown">
+
+                <a><span class="lang-ja">コーパス分析</span><span class="lang-en">Corpus Tools</span></a>
+
+                <div class="gnav-dropdown-content">
+
+                    <a href="http://keiosfc-aki2025.github.io/KeioSFC/keioSFC.html">KeioSFC</a>
+
+                    <a href="https://keiosfc-aki2025.github.io/KeioSFC/xmleditor.html">Keio XMLeditor</a>
+
+                </div>
+
+            </div>
+
+			
+
+			
+
+			<a href="https://ayamada.sfc.keio.ac.jp/contact"><span class="lang-ja">コンタクト</span><span class="lang-en">CONTACT</span></a>
+
+            <button id="lang-btn" class="lang-toggle">English</button>
+
+        </div>
+
+    </div>
+
+	
+
+	<h1 style="text-align: center;"><span class="lang-ja">研究会B（その１）</span><span class="lang-en">Seminar B: part I</span></h1>
+
+	<h1 style="text-align: center;"><span class="lang-ja">理論言語学実践</span><span class="lang-en">Pactice in Theoretical Linguistics</span></h1>
 
     <main class="container">
 <main>
@@ -1761,6 +1949,27 @@ function closeModal(event) {
 }
 
 
+
+// HTMLがすべて読み込まれてから実行する（エラー防止）
+document.addEventListener('DOMContentLoaded', function() {
+    const langBtn = document.getElementById('lang-btn');
+    
+    // もしページ内にボタンが無くてもエラーを出さないための安全対策
+    if (!langBtn) return; 
+
+    langBtn.addEventListener('click', function(e) {
+        // もしボタンを <a href="#"> 等で作っていた場合、画面がリロードされるのを防ぐ
+        e.preventDefault(); 
+        
+        document.body.classList.toggle('is-en');
+        
+        if (document.body.classList.contains('is-en')) {
+            langBtn.textContent = '日本語';
+        } else {
+            langBtn.textContent = 'English';
+        }
+    });
+});
 </script>
 </body>
 </html>
