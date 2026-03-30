@@ -1,588 +1,1173 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akitaka Yamada's Website</title>
-    <linkpreconnect="https://fonts.googleapis.com">
-    <linkpreconnect="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* --- 基本設定 --- */
-        :root {
-            --font-family: \'Zen Maru Gothic\', sans-serif;
-            --bg-color: #fcefee;
-            --text-color: #5a4a42;
-            --spring-color: #ffb7c5; --spring-bg: #fff0f5;
-            --summer-color: #4fc3f7; --summer-bg: #e1f5fe;
-            --autumn-color: #ff8c00; --autumn-bg: #fffaf0;
-            --winter-color: #87ceeb; --winter-bg: #f0f8ff;
-        }
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0; padding: 0; line-height: 1.6;
-            background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
-        }
-        header {
-            text-align: center; padding: 2rem 1rem;
-            background-color: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(5px);
-            border-bottom: 3px dotted var(--spring-color);
-        }
-        .site-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: #d35400; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-        .site-subtitle { font-size: 1.2rem; margin-top: 0.5rem; color: #7f8c8d; }
-        nav { margin-top: 1.5rem; }
-        nav a {
-            text-decoration: none; color: var(--text-color); font-weight: bold;
-            margin: 0 10px; padding: 8px 16px; border-radius: 20px;
-            background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        nav a:hover { background-color: var(--spring-color); color: white; transform: translateY(-2px); }
-        .container {
-            max-width: 1200px; margin: 3rem auto; padding: 0 2rem;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 2.5rem;
-        }
-        .term-card {
-            border-radius: 20px; padding: 2rem;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1); position: relative; overflow: hidden;
-        }
-        .term-card h2 { font-size: 1.8rem; margin-top: 0; margin-bottom: 1.5rem; position: relative; z-index: 1; }
-        .card-content { background-color: #ffffff; border-radius: 15px; padding: 1.5rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
-        .card-content h3 {
-            font-size: 1.3rem; color: var(--text-color); border-left: 5px solid currentColor;
-            padding-left: 10px; margin-top: 1.5rem; margin-bottom: 1rem;
-        }
-        .card-content h3:first-child { margin-top: 0; }
-        .divider { border: none; border-top: 2px dashed #ddd; margin: 1.5rem 0; }
-        ul { list-style-type: none; padding-left: 1rem; }
-        ul li { margin-bottom: 0.5rem; }
-
-        /* 季節ごとのスタイル */
-        .spring { background-color: var(--spring-bg); border: 3px solid var(--spring-color); }
-        .spring h2, .spring h3 { color: #e74c3c; }
-        .spring::before { content: "🌸"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
-        .spring::after { content: "🐦"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; }
-
-        .summer { background-color: var(--summer-bg); border: 3px solid var(--summer-color); }
-        .summer h2, .summer h3 { color: #2980b9; }
-        .summer::before { content: "⛱️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
-        .summer::after { content: "⛵"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; }
-
-        .autumn { background-color: var(--autumn-bg); border: 3px solid var(--autumn-color); }
-        .autumn h2, .autumn h3 { color: #d35400; }
-        .autumn::before { content: "🍁"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.9; transform: rotate(-15deg); }
-        .autumn::after { content: "🍂"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.8; transform: rotate(20deg); }
-
-        .winter { background-color: var(--winter-bg); border: 3px solid var(--winter-color); }
-        .winter h2, .winter h3 { color: #2980b9; }
-        .winter::before { content: "❄️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
-        .winter::after { content: "☃️"; position: absolute; bottom: 10px; left: 20px; font-size: 2rem; opacity: 0.6; }
-
-        /* 吹き出しリスト */
-        .speech-bubble-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
-        .speech-bubble {
-            background-color: #fff; border: 2px solid currentColor; border-radius: 12px;
-            padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 0 rgba(0,0,0,0.05);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; position: relative; top: 0;
-        }
-        .speech-bubble:hover { top: -5px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background-color: #fffdfa; }
-        .speech-bubble span { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.7; margin-top: 2px; }
-        .winter .speech-bubble { color: #3498db; }
-
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; padding: 0 1rem; }
-            .site-title { font-size: 2rem; }
-            nav a { margin: 5px; display: inline-block; }
-
-            /* ピンク色の余白（外枠）を小さく */
-            .term-card {
-                padding: 1.2rem 1rem !important;
-                margin-bottom: 1.5rem !important;
-            }
-            /* Spring 2025 などのタイトルを小さく */
-            .term-card h2 {
-                font-size: 1.4rem !important;
-                margin-bottom: 0.8rem !important;
-            }
-            /* 白いボックス内の余白を小さく */
-            .card-content {
-                padding: 1rem !important;
-            }
-            /* 中の文字も全体的に少し縮小 */
-            .card-content p, .card-content h3 {
-                font-size: 0.95rem !important;
-                margin-bottom: 0.5rem !important;
-            }
-        }
-
-        /* ハガキ風モーダル */
-        /* モーダル背景：スライダーを中央に寄せる */
-.modal-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
-    opacity: 0; transition: opacity 0.3s; overflow: hidden;
-}
-.modal-overlay.active { display: flex; opacity: 1; }
-
-/* カード1枚分の「表示窓」 */
-.slider-viewport {
-    width: 85vw; max-width: 600px; /* カードと同じ幅にする */
-    height: 80vh; display: flex; align-items: center;
-    overflow: visible; /* ★ここが重要：はみ出た左右のカードを見せる */
-    position: relative;
-}
-
-/* カードが並ぶ線路 */
-.postcard-track {
-    display: flex; gap: 30px; /* カード間の距離 */
-    transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-    align-items: center;
-    touch-action: pan-y; /* スワイプのために横方向を許可 */
-}
-
-/* カード共通設定 */
-.postcard {
-    flex-shrink: 0; width: 85vw; max-width: 600px;
-    background-color: #f4ecd8; padding: 40px; 
-    /* ★改善：手書き風のヨレた縁を完全に復元 */
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    border: 2px solid #5d4037;
-    box-shadow: 8px 12px 25px rgba(0,0,0,0.3);
-    opacity: 0.3; transform: scale(0.8) rotate(2deg); /* 横にある時は少し傾ける */
-    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-    filter: grayscale(0.5) blur(2px);
-}
-
-/* ★改善：フォトボックス（切手・スタンプ）の傾きを復元 */
-.photo-box {
-    width: 140px; height: 160px; border: 2px dotted #ccc; background: #fff;
-    padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    transform: rotate(4deg); flex-shrink: 0;
-}
-
-/* ★中央のカード：濃く、大きく */
-.postcard.active {
-    opacity: 1;
-    transform: scale(1) rotate(-1deg);
-    z-index: 100; /* ★一番上に表示されるように数値を大きくします */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4); /* 選択中のカードを目立たせる */
-}
-
-/* ボタンの配置（画面の両端） */
-.nav-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    background: white; border: none; border-radius: 50%;
-    width: 50px; height: 50px; cursor: pointer; z-index: 2000;
-    font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-.prev-btn { left: 20px; }
-.next-btn { right: 20px; }
-        
-<style> 
-/* モーダル全体の設定変更 */
-.modal-overlay {
-    overflow: hidden; /* はみ出たカードを隠す */
-}
-
-.slider-viewport {
-    width: 100%;
-    max-width: 850px; 
-    display: flex;
-    justify-content: flex-start; /* ★ center から flex-start に変更 */
-    align-items: center;
-    perspective: 1000px;
-}
-
-
-.postcard.active {
-    opacity: 1;
-    transform: scale(1) rotate(-1deg);
-    filter: grayscale(0);
-    z-index: 500; /* ★ 隣のカードより手前に出すために大きな値を設定 */
-    position: relative;
-}
-
-/* カードが並ぶ線路 */
-.postcard-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    align-items: center;
-    gap: 40px; /* カード間の隙間 */
-}
-
-/* カード個別のスタイル修正 */
-.postcard {
-    flex-shrink: 0;
-    width: 90vw;
-    max-width: 850px; 
-    opacity: 0.4; 
-    transform: scale(0.8); 
-    transition: all 0.5s ease;
-    filter: grayscale(0.5);
-    margin: 0; 
-    padding:30px 30px 10px 30px; 
-    max-height: 85vh;
-    /* ★改善：はがき全体を「縦並び（ヘッダーとボディ）」に戻す */
-    display: flex;
-    flex-direction: column; 
-    gap: 0; 
-}
-
-/* ★改善：.postcard-left は使わないので削除、代わりにヘッダーの配置を変更 */
-.postcard-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between; /* ★追加：写真・名前・スタンプを横いっぱいに広げる */
-    gap: 20px;
-    margin-bottom: 15px; /* ボディとの隙間 */
-    width: 100%;
-}
-
-
-/* ★追加：はがきの右半分（スタンプカード） */
-
-
-.stamp-title {
-    margin: 0 0 8px 0; /* ★下の余白を小さく */
-    color: #5d4037;
-    font-size: 0.8rem; /* ★文字を小さく */
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 1.5px dashed #5d4037;
-    padding-bottom: 3px;
-    width: 100%;
-    letter-spacing: 0.05em;
-}
-
-.stamp-card {
-    width: 32%; /* ★横に4つ並べるため、少し幅を広げます */
-    max-width: 220px; /* ★最大幅も少しアップ */
-    flex-shrink: 0;
-    border: 2px solid #5d4037; 
-    border-radius: 8px;
-    padding: 8px; /* ★内側の余白を少し詰めると綺麗です */
-    background-color: #fffaf0; 
-    align-self: flex-end; /* ★スタンプカードをヘッダーの底辺に吸着させる */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    margin-bottom: 2px; /* ★微調整：下線の太さ分だけ浮かせるとより綺麗に揃います */
-}
-
-.stamp-grid {
-    display: grid;
-    /* ★変更：横4列、縦2段の「4×2」レイアウトにします */
-    grid-template-columns: repeat(4, 1fr); 
-    grid-template-rows: repeat(2, 1fr);    
-    gap: 6px 4px; /* 縦と横の隙間を微調整 */
-    width: 100%;
-    justify-items: center; 
-    align-items: center; 
-}
-
-/* 空のスタンプを押す枠（グレーの点線） */
-.stamp-box {
-    width: 35px;  /* ★枠を小さく */
-    height: 35px; /* ★枠を小さく */
-    border: 1.5px dotted #b0bec5; 
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-/* 実際に押されるスタンプ */
-.stamp-item {
-    width: 28px;  /* ★スタンプ本体を小さく */
-    height: 28px; /* ★スタンプ本体を小さく */
-    border-width: 2px;
-    border-style: double; 
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 0.6rem; /* ★スタンプ内の文字を小さく */
-    background-color: transparent;
-    opacity: 0.85; 
-}
-
-/* ★追加：写真と名前部分を横並びにする */
-.postcard-header {
-    display: flex;
-    align-items: stretch;
-    gap: 25px;
-    margin-bottom: 5px; 
-}
-.header-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-.header-project {
-    margin-top: 10px;
-    margin-bottom: 0; /* ★改善：h3タグ特有の見えない下余白を強制的にゼロにする */
-    border-bottom: 2px solid #5d4037;
-    padding-bottom: 5px;
-    align-self: flex-start;
-}
-
-/* 中央に来たカードの強調 */
-
-.postcard.active {
-    opacity: 1;
-    transform: scale(1) rotate(-1deg);
-    filter: grayscale(0);
-    z-index: 10;
-}
-
-/* ナビゲーションボタン */
-.nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 2000;
-    color: #5d4037;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s;
-}
-.nav-btn:hover { background: #5d4037; color: #fff; }
-.prev-btn { left: 5vw; }
-.next-btn { right: 5vw; }
-
-@media (max-width: 768px) {
-    .nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
-}
-
-/* --- モーダル内の余白と白い囲いの設定 --- */
-.postcard-body {
-    flex-grow: 1;      /* はがきの余った高さをすべて使う */
-    overflow-y: auto;  /* 中身が溢れたら縦スクロールする */
-    padding-right: 10px; /* スクロールバーと文字が被らないように右に少し隙間を空ける */
-}
-
-.modal-section {
-    background-color: #ffffff; 
-    padding: 10px 25px;            
-    border-radius: 20px;
-    
-    /* ぼんやりとした温かい光の演出 */
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 
-                0 5px 15px rgba(0, 0, 0, 0.05); 
-    border: 1px solid rgba(255, 255, 255, 0.5);
-	
-	margin-bottom: 0; /* ★追加：外側の下余白をゼロにする */
-}
-
-.modal-item {
-    margin-bottom: 2px; 
-    line-height: 1.6;
-}
-.modal-item:last-child {
-    margin-bottom: 0;
-}
-
-.modal-text {
-    display: inline;
-    color: #3e2723;
-    white-space: pre-wrap;
-    padding-left: 0; /* ★追加：過去の左余白設定を完全に打ち消す */
-    margin-left: 0;  /* ★追加：念のためマージンもゼロに */
-}
-
-.modal-label {
-    display: inline;
-    color: #8d6e63; 
-    font-size: 0.95rem;
-    font-weight: bold;
-    letter-spacing: 0.05em;
-    padding-left: 0; /* ★追加：ラベル側の余白もゼロに */
-}
-
-.close-btn { 
-    position: absolute; top: 20px; right: 30px; font-size: 3.5rem; 
-    color: #fff; cursor: pointer; z-index: 3000; text-shadow: 0 0 10px rgba(0,0,0,0.5); 
-}
-.close-btn:hover { color: #ffb7c5; transform: scale(1.1); }
-
-        .close-btn:hover { color: #555; }
-        @media (max-width: 600px) { .postcard-header { flex-direction: column; text-align: center; } .header-project { font-size: 1.2rem; } }
-		
-		
-		/* タブメニューのスタイル */
-.tab-menu {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 2rem;
-}
-.tab-button {
-    padding: 12px 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border: 2px solid #5d4037;
-    background: #fff;
-    color: #5d4037;
-    border-radius: 30px;
-    transition: all 0.3s;
-}
-.tab-button.active {
-    background: #5d4037;
-    color: #fff;
-}
-.tab-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-
-/* --- スマホ専用の調整（画面幅が768px以下の時だけ適用） --- */
-@media screen and (max-width: 768px) {
-
-    /* 1. カード自体の設定 */
-    .postcard {
-        max-height: 80vh !important;
-        overflow-y: auto !important;
-        padding: 20px 15px !important;
-        display: block !important;
-    }
-
-    /* 2. ヘッダー内の配置（カードを左、切手を右に固定） */
-    .postcard-header {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        align-items: flex-end !important; /* 底辺を揃える */
-        gap: 10px !important;
-        height: auto !important;
-    }
-
-    /* ★切手を「右」へ（order: 2） */
-    .photo-box { 
-        order: 1 !important; 
-        width: 130px !important; 
-        height: 115px !important; 
-        flex-shrink: 0 !important;
-        margin: 0 0 2px 0 !important;
-    }
-	
-	/* ★スタンプカードを「左」へ（order: 1） */
-    .stamp-card { 
-        order: 2 !important; 
-        flex: 1 !important; /* 残りの幅をすべて使い、切手を右へ押し出す */
-        min-width: 105px !important;
-        margin: 0 0 2px 0 !important;
-        padding: 5px !important;
-    }
-
-   
-    .stamp-title { 
-        font-size: 0.5rem !important; /* タイトル文字を最小に */
-        margin-bottom: 2px !important;
-        letter-spacing: -0.02em;
-    }
-
-    .stamp-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
-        grid-template-rows: repeat(2, 1fr) !important;
-        gap: 2px !important; /* 隙間をさらに詰める */
-    }
-
-    /* スタンプの台紙（外枠） */
-    .stamp-box { 
-        width: 22px !important; 
-        height: 22px !important; 
-    }
-
-    /* スタンプ本体（丸い色部分と文字） */
-    .stamp-item { 
-        width: 18px !important; 
-        height: 18px !important; 
-        font-size: 0.45rem !important; /* スタンプ内の数字/文字を最小に */
-        line-height: 18px !important;
-    }
-
-    /* 4. プロジェクト (イニシャル 期生) を一行にするバグ修正 */
-    .header-info {
-        width: 100% !important;
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        align-items: baseline !important;
-        gap: 0 4px !important;
-        margin-top: 10px !important;
-        text-align: left !important;
-    }
-    /* すべての要素の「幅100%」と「改行」を強制解除 */
-    .header-info > * {
-        display: inline-block !important;
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-    }
-    .h1 { 
-        font-size: 0.4rem !important; 
-    }
-
-    .header-project { 
-        order: 1 !important; 
-        font-size: 0.9rem !important; 
-    }
-    .header-name { 
-        order: 2 !important; 
-        font-size: 0.9rem !important; 
-    }
-    .header-name::before { content: " （"; } /* イニシャルの前に括弧 */
-
-    .header-info div:nth-of-type(2) { 
-        order: 3 !important; 
-        font-size: 0.85rem !important; 
-    }
-    .header-info div:nth-of-type(2)::after { content: "）"; } /* 期生の後ろに閉じ括弧 */
-
-    /* 5. 閉じる（×）ボタンを小さく */
-    .close-btn {
-        font-size: 2.2rem !important;
-        top: 10px !important;
-        right: 15px !important;
-    }
-	
-}
-
-
-
-    </style>
-</head>
-<body>
-    <header>
-        <h1 class="site-title">Akitaka Yamada's Website</h1>
-        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
-        <nav>
-            <a href="https://ayamada.sfc.keio.ac.jp/">TOP</a>
-            <a href="https://ayamada.sfc.keio.ac.jp/publications">PUBLICATIONS</a>
-            <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
-			<a href = "https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1">TEACHING</a>
-            <a href="#">SEMINARS</a>
-            <a href="https://ayamada.sfc.keio.ac.jp/contact">CONTACT</a>
-        </nav>
-    </header>
-<h1 style="text-align: center;">研究会B（その１）</h1>
-<h1 style="text-align: center;">理論言語学実践</h1>
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Akitaka Yamada's Website</title>
+
+    <linkpreconnect="https://fonts.googleapis.com">
+
+    <linkpreconnect="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* --- 基本設定 --- */
+
+        :root {
+
+            --font-family: \'Zen Maru Gothic\', sans-serif;
+
+            --bg-color: #fcefee;
+
+            --text-color: #5a4a42;
+
+            --spring-color: #ffb7c5; --spring-bg: #fff0f5;
+
+            --summer-color: #4fc3f7; --summer-bg: #e1f5fe;
+
+            --autumn-color: #ff8c00; --autumn-bg: #fffaf0;
+
+            --winter-color: #87ceeb; --winter-bg: #f0f8ff;
+
+        }
+
+        body {
+
+            font-family: var(--font-family);
+
+            background-color: var(--bg-color);
+
+            color: var(--text-color);
+
+            margin: 0; padding: 0; line-height: 1.6;
+
+            background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
+
+        }
+
+        header {
+
+            text-align: center; padding: 2rem 1rem;
+
+            background-color: rgba(255, 255, 255, 0.6);
+
+            backdrop-filter: blur(5px);
+
+            border-bottom: 3px dotted var(--spring-color);
+
+        }
+
+        .site-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: #d35400; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+
+        .site-subtitle { font-size: 1.2rem; margin-top: 0.5rem; color: #7f8c8d; }
+
+        nav { margin-top: 1.5rem; }
+
+        nav a {
+
+            text-decoration: none; color: var(--text-color); font-weight: bold;
+
+            margin: 0 10px; padding: 8px 16px; border-radius: 20px;
+
+            background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+            transition: all 0.3s ease;
+
+        }
+
+        nav a:hover { background-color: var(--spring-color); color: white; transform: translateY(-2px); }
+
+        .container {
+
+            max-width: 1200px; margin: 3rem auto; padding: 0 2rem;
+
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+
+            gap: 2.5rem;
+
+        }
+
+        .term-card {
+
+            border-radius: 20px; padding: 2rem;
+
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+
+        }
+
+        .term-card h2 { font-size: 1.8rem; margin-top: 0; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+
+        .card-content { background-color: #ffffff; border-radius: 15px; padding: 1.5rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+
+        .card-content h3 {
+
+            font-size: 1.3rem; color: var(--text-color); border-left: 5px solid currentColor;
+
+            padding-left: 10px; margin-top: 1.5rem; margin-bottom: 1rem;
+
+        }
+
+        .card-content h3:first-child { margin-top: 0; }
+
+        .divider { border: none; border-top: 2px dashed #ddd; margin: 1.5rem 0; }
+
+        ul { list-style-type: none; padding-left: 1rem; }
+
+        ul li { margin-bottom: 0.5rem; }
+
+
+
+        /* 季節ごとのスタイル */
+
+        .spring { background-color: var(--spring-bg); border: 3px solid var(--spring-color); }
+
+        .spring h2, .spring h3 { color: #e74c3c; }
+
+        .spring::before { content: "🌸"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+
+        .spring::after { content: "🐦"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; }
+
+
+
+        .summer { background-color: var(--summer-bg); border: 3px solid var(--summer-color); }
+
+        .summer h2, .summer h3 { color: #2980b9; }
+
+        .summer::before { content: "⛱️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+
+        .summer::after { content: "⛵"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.6; }
+
+
+
+        .autumn { background-color: var(--autumn-bg); border: 3px solid var(--autumn-color); }
+
+        .autumn h2, .autumn h3 { color: #d35400; }
+
+        .autumn::before { content: "🍁"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.9; transform: rotate(-15deg); }
+
+        .autumn::after { content: "🍂"; position: absolute; bottom: 10px; left: 20px; font-size: 2.5rem; opacity: 0.8; transform: rotate(20deg); }
+
+
+
+        .winter { background-color: var(--winter-bg); border: 3px solid var(--winter-color); }
+
+        .winter h2, .winter h3 { color: #2980b9; }
+
+        .winter::before { content: "❄️"; position: absolute; top: 15px; right: 15px; font-size: 3rem; opacity: 0.8; }
+
+        .winter::after { content: "☃️"; position: absolute; bottom: 10px; left: 20px; font-size: 2rem; opacity: 0.6; }
+
+
+
+        /* 吹き出しリスト */
+
+        .speech-bubble-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+
+        .speech-bubble {
+
+            background-color: #fff; border: 2px solid currentColor; border-radius: 12px;
+
+            padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; position: relative; top: 0;
+
+        }
+
+        .speech-bubble:hover { top: -5px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background-color: #fffdfa; }
+
+        .speech-bubble span { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.7; margin-top: 2px; }
+
+        .winter .speech-bubble { color: #3498db; }
+
+
+
+        @media (max-width: 768px) {
+
+            .container { grid-template-columns: 1fr; padding: 0 1rem; }
+
+            .site-title { font-size: 2rem; }
+
+            nav a { margin: 5px; display: inline-block; }
+
+
+
+            /* ピンク色の余白（外枠）を小さく */
+
+            .term-card {
+
+                padding: 1.2rem 1rem !important;
+
+                margin-bottom: 1.5rem !important;
+
+            }
+
+            /* Spring 2025 などのタイトルを小さく */
+
+            .term-card h2 {
+
+                font-size: 1.4rem !important;
+
+                margin-bottom: 0.8rem !important;
+
+            }
+
+            /* 白いボックス内の余白を小さく */
+
+            .card-content {
+
+                padding: 1rem !important;
+
+            }
+
+            /* 中の文字も全体的に少し縮小 */
+
+            .card-content p, .card-content h3 {
+
+                font-size: 0.95rem !important;
+
+                margin-bottom: 0.5rem !important;
+
+            }
+
+        }
+
+
+
+        /* ハガキ風モーダル */
+
+        /* モーダル背景：スライダーを中央に寄せる */
+
+.modal-overlay {
+
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
+    background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+
+    opacity: 0; transition: opacity 0.3s; overflow: hidden;
+
+}
+
+.modal-overlay.active { display: flex; opacity: 1; }
+
+
+
+/* カード1枚分の「表示窓」 */
+
+.slider-viewport {
+
+    width: 85vw; max-width: 600px; /* カードと同じ幅にする */
+
+    height: 80vh; display: flex; align-items: center;
+
+    overflow: visible; /* ★ここが重要：はみ出た左右のカードを見せる */
+
+    position: relative;
+
+}
+
+
+
+/* カードが並ぶ線路 */
+
+.postcard-track {
+
+    display: flex; gap: 30px; /* カード間の距離 */
+
+    transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+
+    align-items: center;
+
+    touch-action: pan-y; /* スワイプのために横方向を許可 */
+
+}
+
+
+
+/* カード共通設定 */
+
+.postcard {
+
+    flex-shrink: 0; width: 85vw; max-width: 600px;
+
+    background-color: #f4ecd8; padding: 40px; 
+
+    /* ★改善：手書き風のヨレた縁を完全に復元 */
+
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+
+    border: 2px solid #5d4037;
+
+    box-shadow: 8px 12px 25px rgba(0,0,0,0.3);
+
+    opacity: 0.3; transform: scale(0.8) rotate(2deg); /* 横にある時は少し傾ける */
+
+    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+
+    filter: grayscale(0.5) blur(2px);
+
+}
+
+
+
+/* ★改善：フォトボックス（切手・スタンプ）の傾きを復元 */
+
+.photo-box {
+
+    width: 140px; height: 160px; border: 2px dotted #ccc; background: #fff;
+
+    padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+
+    transform: rotate(4deg); flex-shrink: 0;
+
+}
+
+
+
+/* ★中央のカード：濃く、大きく */
+
+.postcard.active {
+
+    opacity: 1;
+
+    transform: scale(1) rotate(-1deg);
+
+    z-index: 100; /* ★一番上に表示されるように数値を大きくします */
+
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4); /* 選択中のカードを目立たせる */
+
+}
+
+
+
+/* ボタンの配置（画面の両端） */
+
+.nav-btn {
+
+    position: absolute; top: 50%; transform: translateY(-50%);
+
+    background: white; border: none; border-radius: 50%;
+
+    width: 50px; height: 50px; cursor: pointer; z-index: 2000;
+
+    font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+}
+
+.prev-btn { left: 20px; }
+
+.next-btn { right: 20px; }
+
+        
+
+<style> 
+
+/* モーダル全体の設定変更 */
+
+.modal-overlay {
+
+    overflow: hidden; /* はみ出たカードを隠す */
+
+}
+
+
+
+.slider-viewport {
+
+    width: 100%;
+
+    max-width: 850px; 
+
+    display: flex;
+
+    justify-content: flex-start; /* ★ center から flex-start に変更 */
+
+    align-items: center;
+
+    perspective: 1000px;
+
+}
+
+
+
+
+
+.postcard.active {
+
+    opacity: 1;
+
+    transform: scale(1) rotate(-1deg);
+
+    filter: grayscale(0);
+
+    z-index: 500; /* ★ 隣のカードより手前に出すために大きな値を設定 */
+
+    position: relative;
+
+}
+
+
+
+/* カードが並ぶ線路 */
+
+.postcard-track {
+
+    display: flex;
+
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+    align-items: center;
+
+    gap: 40px; /* カード間の隙間 */
+
+}
+
+
+
+/* カード個別のスタイル修正 */
+
+.postcard {
+
+    flex-shrink: 0;
+
+    width: 90vw;
+
+    max-width: 850px; 
+
+    opacity: 0.4; 
+
+    transform: scale(0.8); 
+
+    transition: all 0.5s ease;
+
+    filter: grayscale(0.5);
+
+    margin: 0; 
+
+    padding:30px 30px 10px 30px; 
+
+    max-height: 85vh;
+
+    /* ★改善：はがき全体を「縦並び（ヘッダーとボディ）」に戻す */
+
+    display: flex;
+
+    flex-direction: column; 
+
+    gap: 0; 
+
+}
+
+
+
+/* ★改善：.postcard-left は使わないので削除、代わりにヘッダーの配置を変更 */
+
+.postcard-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between; /* ★追加：写真・名前・スタンプを横いっぱいに広げる */
+
+    gap: 20px;
+
+    margin-bottom: 15px; /* ボディとの隙間 */
+
+    width: 100%;
+
+}
+
+
+
+
+
+/* ★追加：はがきの右半分（スタンプカード） */
+
+
+
+
+
+.stamp-title {
+
+    margin: 0 0 8px 0; /* ★下の余白を小さく */
+
+    color: #5d4037;
+
+    font-size: 0.8rem; /* ★文字を小さく */
+
+    font-weight: bold;
+
+    text-align: center;
+
+    border-bottom: 1.5px dashed #5d4037;
+
+    padding-bottom: 3px;
+
+    width: 100%;
+
+    letter-spacing: 0.05em;
+
+}
+
+
+
+.stamp-card {
+
+    width: 32%; /* ★横に4つ並べるため、少し幅を広げます */
+
+    max-width: 220px; /* ★最大幅も少しアップ */
+
+    flex-shrink: 0;
+
+    border: 2px solid #5d4037; 
+
+    border-radius: 8px;
+
+    padding: 8px; /* ★内側の余白を少し詰めると綺麗です */
+
+    background-color: #fffaf0; 
+
+    align-self: flex-end; /* ★スタンプカードをヘッダーの底辺に吸着させる */
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    box-sizing: border-box;
+
+    margin-bottom: 2px; /* ★微調整：下線の太さ分だけ浮かせるとより綺麗に揃います */
+
+}
+
+
+
+.stamp-grid {
+
+    display: grid;
+
+    /* ★変更：横4列、縦2段の「4×2」レイアウトにします */
+
+    grid-template-columns: repeat(4, 1fr); 
+
+    grid-template-rows: repeat(2, 1fr);    
+
+    gap: 6px 4px; /* 縦と横の隙間を微調整 */
+
+    width: 100%;
+
+    justify-items: center; 
+
+    align-items: center; 
+
+}
+
+
+
+/* 空のスタンプを押す枠（グレーの点線） */
+
+.stamp-box {
+
+    width: 35px;  /* ★枠を小さく */
+
+    height: 35px; /* ★枠を小さく */
+
+    border: 1.5px dotted #b0bec5; 
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 0 auto;
+
+}
+
+
+
+/* 実際に押されるスタンプ */
+
+.stamp-item {
+
+    width: 28px;  /* ★スタンプ本体を小さく */
+
+    height: 28px; /* ★スタンプ本体を小さく */
+
+    border-width: 2px;
+
+    border-style: double; 
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-weight: bold;
+
+    font-size: 0.6rem; /* ★スタンプ内の文字を小さく */
+
+    background-color: transparent;
+
+    opacity: 0.85; 
+
+}
+
+
+
+/* ★追加：写真と名前部分を横並びにする */
+
+.postcard-header {
+
+    display: flex;
+
+    align-items: stretch;
+
+    gap: 25px;
+
+    margin-bottom: 5px; 
+
+}
+
+.header-info {
+
+    flex-grow: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.header-project {
+
+    margin-top: 10px;
+
+    margin-bottom: 0; /* ★改善：h3タグ特有の見えない下余白を強制的にゼロにする */
+
+    border-bottom: 2px solid #5d4037;
+
+    padding-bottom: 5px;
+
+    align-self: flex-start;
+
+}
+
+
+
+/* 中央に来たカードの強調 */
+
+
+
+.postcard.active {
+
+    opacity: 1;
+
+    transform: scale(1) rotate(-1deg);
+
+    filter: grayscale(0);
+
+    z-index: 10;
+
+}
+
+
+
+/* ナビゲーションボタン */
+
+.nav-btn {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: rgba(255, 255, 255, 0.8);
+
+    border: none;
+
+    border-radius: 50%;
+
+    width: 60px;
+
+    height: 60px;
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+
+    z-index: 2000;
+
+    color: #5d4037;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    transition: all 0.3s;
+
+}
+
+.nav-btn:hover { background: #5d4037; color: #fff; }
+
+.prev-btn { left: 5vw; }
+
+.next-btn { right: 5vw; }
+
+
+
+@media (max-width: 768px) {
+
+    .nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+
+}
+
+
+
+/* --- モーダル内の余白と白い囲いの設定 --- */
+
+.postcard-body {
+
+    flex-grow: 1;      /* はがきの余った高さをすべて使う */
+
+    overflow-y: auto;  /* 中身が溢れたら縦スクロールする */
+
+    padding-right: 10px; /* スクロールバーと文字が被らないように右に少し隙間を空ける */
+
+}
+
+
+
+.modal-section {
+
+    background-color: #ffffff; 
+
+    padding: 10px 25px;            
+
+    border-radius: 20px;
+
+    
+
+    /* ぼんやりとした温かい光の演出 */
+
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 
+
+                0 5px 15px rgba(0, 0, 0, 0.05); 
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+	
+
+	margin-bottom: 0; /* ★追加：外側の下余白をゼロにする */
+
+}
+
+
+
+.modal-item {
+
+    margin-bottom: 2px; 
+
+    line-height: 1.6;
+
+}
+
+.modal-item:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+
+.modal-text {
+
+    display: inline;
+
+    color: #3e2723;
+
+    white-space: pre-wrap;
+
+    padding-left: 0; /* ★追加：過去の左余白設定を完全に打ち消す */
+
+    margin-left: 0;  /* ★追加：念のためマージンもゼロに */
+
+}
+
+
+
+.modal-label {
+
+    display: inline;
+
+    color: #8d6e63; 
+
+    font-size: 0.95rem;
+
+    font-weight: bold;
+
+    letter-spacing: 0.05em;
+
+    padding-left: 0; /* ★追加：ラベル側の余白もゼロに */
+
+}
+
+
+
+.close-btn { 
+
+    position: absolute; top: 20px; right: 30px; font-size: 3.5rem; 
+
+    color: #fff; cursor: pointer; z-index: 3000; text-shadow: 0 0 10px rgba(0,0,0,0.5); 
+
+}
+
+.close-btn:hover { color: #ffb7c5; transform: scale(1.1); }
+
+
+
+        .close-btn:hover { color: #555; }
+
+        @media (max-width: 600px) { .postcard-header { flex-direction: column; text-align: center; } .header-project { font-size: 1.2rem; } }
+
+		
+
+		
+
+		/* タブメニューのスタイル */
+
+.tab-menu {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-bottom: 2rem;
+
+}
+
+.tab-button {
+
+    padding: 12px 25px;
+
+    font-size: 1.1rem;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    border: 2px solid #5d4037;
+
+    background: #fff;
+
+    color: #5d4037;
+
+    border-radius: 30px;
+
+    transition: all 0.3s;
+
+}
+
+.tab-button.active {
+
+    background: #5d4037;
+
+    color: #fff;
+
+}
+
+.tab-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+}
+
+
+
+
+
+/* --- スマホ専用の調整（画面幅が768px以下の時だけ適用） --- */
+
+@media screen and (max-width: 768px) {
+
+
+
+    /* 1. カード自体の設定 */
+
+    .postcard {
+
+        max-height: 80vh !important;
+
+        overflow-y: auto !important;
+
+        padding: 20px 15px !important;
+
+        display: block !important;
+
+    }
+
+
+
+    /* 2. ヘッダー内の配置（カードを左、切手を右に固定） */
+
+    .postcard-header {
+
+        display: flex !important;
+
+        flex-direction: row !important;
+
+        flex-wrap: wrap !important;
+
+        align-items: flex-end !important; /* 底辺を揃える */
+
+        gap: 10px !important;
+
+        height: auto !important;
+
+    }
+
+
+
+    /* ★切手を「右」へ（order: 2） */
+
+    .photo-box { 
+
+        order: 1 !important; 
+
+        width: 130px !important; 
+
+        height: 115px !important; 
+
+        flex-shrink: 0 !important;
+
+        margin: 0 0 2px 0 !important;
+
+    }
+
+	
+
+	/* ★スタンプカードを「左」へ（order: 1） */
+
+    .stamp-card { 
+
+        order: 2 !important; 
+
+        flex: 1 !important; /* 残りの幅をすべて使い、切手を右へ押し出す */
+
+        min-width: 105px !important;
+
+        margin: 0 0 2px 0 !important;
+
+        padding: 5px !important;
+
+    }
+
+
+
+   
+
+    .stamp-title { 
+
+        font-size: 0.5rem !important; /* タイトル文字を最小に */
+
+        margin-bottom: 2px !important;
+
+        letter-spacing: -0.02em;
+
+    }
+
+
+
+    .stamp-grid {
+
+        grid-template-columns: repeat(4, 1fr) !important;
+
+        grid-template-rows: repeat(2, 1fr) !important;
+
+        gap: 2px !important; /* 隙間をさらに詰める */
+
+    }
+
+
+
+    /* スタンプの台紙（外枠） */
+
+    .stamp-box { 
+
+        width: 22px !important; 
+
+        height: 22px !important; 
+
+    }
+
+
+
+    /* スタンプ本体（丸い色部分と文字） */
+
+    .stamp-item { 
+
+        width: 18px !important; 
+
+        height: 18px !important; 
+
+        font-size: 0.45rem !important; /* スタンプ内の数字/文字を最小に */
+
+        line-height: 18px !important;
+
+    }
+
+
+
+    /* 4. プロジェクト (イニシャル 期生) を一行にするバグ修正 */
+
+    .header-info {
+
+        width: 100% !important;
+
+        display: flex !important;
+
+        flex-direction: row !important;
+
+        flex-wrap: wrap !important;
+
+        align-items: baseline !important;
+
+        gap: 0 4px !important;
+
+        margin-top: 10px !important;
+
+        text-align: left !important;
+
+    }
+
+    /* すべての要素の「幅100%」と「改行」を強制解除 */
+
+    .header-info > * {
+
+        display: inline-block !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        border: none !important;
+
+    }
+
+    .h1 { 
+
+        font-size: 0.4rem !important; 
+
+    }
+
+
+
+    .header-project { 
+
+        order: 1 !important; 
+
+        font-size: 0.9rem !important; 
+
+    }
+
+    .header-name { 
+
+        order: 2 !important; 
+
+        font-size: 0.9rem !important; 
+
+    }
+
+    .header-name::before { content: " （"; } /* イニシャルの前に括弧 */
+
+
+
+    .header-info div:nth-of-type(2) { 
+
+        order: 3 !important; 
+
+        font-size: 0.85rem !important; 
+
+    }
+
+    .header-info div:nth-of-type(2)::after { content: "）"; } /* 期生の後ろに閉じ括弧 */
+
+
+
+    /* 5. 閉じる（×）ボタンを小さく */
+
+    .close-btn {
+
+        font-size: 2.2rem !important;
+
+        top: 10px !important;
+
+        right: 15px !important;
+
+    }
+
+	
+
+}
+
+
+
+
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1 class="site-title">Akitaka Yamada's Website</h1>
+
+        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
+
+        <nav>
+
+            <a href="https://ayamada.sfc.keio.ac.jp/">TOP</a>
+
+            <a href="https://ayamada.sfc.keio.ac.jp/publications">PUBLICATIONS</a>
+
+            <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
+
+			<a href = "https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1">TEACHING</a>
+
+            <a href="#">SEMINARS</a>
+
+            <a href="https://ayamada.sfc.keio.ac.jp/contact">CONTACT</a>
+
+        </nav>
+
+    </header>
+
+<h1 style="text-align: center;">研究会B（その１）</h1>
+
+<h1 style="text-align: center;">理論言語学実践</h1>
+
     <main class="container">
 <main>
 <div class="tab-menu">
@@ -732,35 +1317,64 @@
                 <hr class="divider"><h3>● イベント</h3><div style="white-space: pre-wrap;"><b>2025年度フェアウェル企画！</b><p>日時：4月3日（金）13:00-</p><p>場所：横浜</p><p>主役：K. H.くん</p></div>
             </div>
         </section></div>
-
-    </main>
-
-    <div id="postcardModal" class="modal-overlay" onclick="closeModal(event)">
-    <button class="nav-btn prev-btn" onclick="moveSlide(-1, event)">◀</button>
-    <button class="nav-btn next-btn" onclick="moveSlide(1, event)">▶</button>
-    
-    <span class="close-btn" onclick="closeModal(event)">×</span>
-
-    <div class="slider-viewport" onclick="event.stopPropagation()">
-        <div id="postcardTrack" class="postcard-track">
-            </div>
-    </div>
-</div>
-
-    <script>
-document.addEventListener("keydown", (e) => {
-    const modal = document.getElementById("postcardModal");
-    
-    // はがき（モーダル）が表示されている時だけキー操作を有効にする
-    if (modal.style.display === "flex" || modal.classList.contains("active")) {
-        if (e.key === "ArrowLeft") {
-            // 左矢印キーが押されたら左へ
-            moveSlide(-1);
-        } else if (e.key === "ArrowRight") {
-            // 右矢印キーが押されたら右へ
-            moveSlide(1);
-        }
-    }
+
+
+    </main>
+
+
+
+    <div id="postcardModal" class="modal-overlay" onclick="closeModal(event)">
+
+    <button class="nav-btn prev-btn" onclick="moveSlide(-1, event)">◀</button>
+
+    <button class="nav-btn next-btn" onclick="moveSlide(1, event)">▶</button>
+
+    
+
+    <span class="close-btn" onclick="closeModal(event)">×</span>
+
+
+
+    <div class="slider-viewport" onclick="event.stopPropagation()">
+
+        <div id="postcardTrack" class="postcard-track">
+
+            </div>
+
+    </div>
+
+</div>
+
+
+
+    <script>
+
+document.addEventListener("keydown", (e) => {
+
+    const modal = document.getElementById("postcardModal");
+
+    
+
+    // はがき（モーダル）が表示されている時だけキー操作を有効にする
+
+    if (modal.style.display === "flex" || modal.classList.contains("active")) {
+
+        if (e.key === "ArrowLeft") {
+
+            // 左矢印キーが押されたら左へ
+
+            moveSlide(-1);
+
+        } else if (e.key === "ArrowRight") {
+
+            // 右矢印キーが押されたら右へ
+
+            moveSlide(1);
+
+        }
+
+    }
+
 });const memberData = {
     "M.S.": {
         name1: "M.S.",
