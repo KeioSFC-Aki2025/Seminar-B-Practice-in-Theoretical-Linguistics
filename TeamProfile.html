@@ -1266,7 +1266,39 @@ body.is-en .lang-en { display: inline; }
 
 
 
+/* パネル全体の基本設定（ポインタを表示） */
 
+.term-card {
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+
+
+/* ホバー時に外枠を強調（4px分の太い枠線を表示） */
+
+.term-card:hover {
+
+    /* 現在の色（--main-accentなど）に合わせて枠を表示 */
+
+    box-shadow: 0 0 0 4px var(--main-accent);
+
+}
+
+
+
+/* メンバーアイコンが浮き出ている時の重なり順を確実に上にする */
+
+.member-icon {
+
+    z-index: 10;
+
+    cursor: pointer;
+
+}
 
 
 
@@ -1359,13 +1391,13 @@ body.is-en .lang-en { display: inline; }
     <main class="container">
 <main>
 <div class="tab-menu">
-<button class="tab-button " onclick="showYear('2026', this)">2026年</button>
-<button class="tab-button active" onclick="showYear('2025', this)">2025年</button>
+<button class="tab-button active" onclick="showYear('2026', this)">2026年</button>
+<button class="tab-button " onclick="showYear('2025', this)">2025年</button>
 </div>
 <div id="year-container">
-<div id="year-2026" class="year-content container" style="display: none;">
+<div id="year-2026" class="year-content container" style="display: grid;">
 
-        <section class="term-card spring">
+        <section class="term-card spring" data-href = "https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/2026-1-Case.html">
             <h2>Spring 2026</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>格（Case）とその関連領域</span><span class='lang-en'>Case</span></h3>
@@ -1390,11 +1422,24 @@ Furthermore, it seems that inserting an object also breaks the structure.<br>
 While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptable, the natural language we call Japanese simply doesn't work that way. But why is that?</p></span></div>
                 <hr class="divider">
                 <h3>◆ <span class="lang-ja">メンバー紹介</span><span class="lang-en">Members</span></h3>
-                <div class="speech-bubble-list"></div>
+                <div class="speech-bubble-list"><div class="speech-bubble member-icon" style="color: #7fffd4;" onclick="openModal(this)" data-id="M.N.">M.N.</div>
+<div class="speech-bubble member-icon" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="Y.M.">Y.M.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.U.">S.U.</div>
+<div class="speech-bubble member-icon" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
+<div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
+<div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="C.S.">C.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.Y.">S.Y.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="H.S.">H.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="T.F.">T.F.</div>
+</div>
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'></span><span class='lang-en'></span></div>
             </div>
         </section>
-        <section class="term-card summer">
+        <section class="term-card summer" data-href = "">
             <h2>Summer 2026</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>TBA</span><span class='lang-en'>TBA</span></h3>
@@ -1405,7 +1450,7 @@ While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptab
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'></span><span class='lang-en'></span></div>
             </div>
         </section>
-        <section class="term-card autumn">
+        <section class="term-card autumn" data-href = "">
             <h2>Fall 2026</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>TBA</span><span class='lang-en'>TBA</span></h3>
@@ -1416,7 +1461,7 @@ While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptab
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'></span><span class='lang-en'></span></div>
             </div>
         </section>
-        <section class="term-card winter">
+        <section class="term-card winter" data-href = "">
             <h2>Winter 2026</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>TBA</span><span class='lang-en'>TBA</span></h3>
@@ -1427,48 +1472,48 @@ While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptab
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'></span><span class='lang-en'></span></div>
             </div>
         </section></div>
-<div id="year-2025" class="year-content container" style="display: grid;">
+<div id="year-2025" class="year-content container" style="display: none;">
 
-        <section class="term-card spring">
+        <section class="term-card spring" data-href = "">
             <h2>Spring 2025</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>言語の変化と変異</span><span class='lang-en'>Variantion and Change</span></h3>
                 <div><span class='lang-ja'><p>同じ人でも、その時の気分や状況でＡを選んだり、Ｂを選んだり…。人の振る舞いを『絶対にこうだ！』と決めつけるのは、とっても難しい。ことばの<font color="blue"><b>選択</b></font>も同じ。でも、そこには、目には見えない『ついついこっちを選んじゃう法則（<font color="red"><b>確率的</b></font>な傾向）』があります。その傾向が変化するときに言語は<font color="purple"><b>変化</b></font>したと言えます。『どんな時にＡを使いたくなるのか？』『逆に、どんな時に避けてしまうのか？』言語表現の選択の不思議をじっくり探っていきましょう。</p></span><span class='lang-en'><p>Even the same person might choose A one moment and B the next, depending on their mood or the situation. It is incredibly difficult to definitively say, "People will always behave like this!" The <font color="blue"><b>selection</b></font> of language is no different. However, there are invisible "rules of thumb" (or <font color="red"><b>probabilistic</b></font> tendencies) that make us lean toward one choice over another. When these tendencies shift, we can say that a language has undergone <font color="purple"><b>change</b></font>. Why do we feel like using "A" in certain contexts? Conversely, when do we find ourselves avoiding it? Let’s take a close look at the fascinating mysteries behind how we choose our linguistic expressions.</p></span></div>
                 <hr class="divider">
                 <h3>◆ <span class="lang-ja">メンバー紹介</span><span class="lang-en">Members</span></h3>
-                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #4aa4bd;" onclick="openModal(this)" data-id="M.S.">M.S.</div>
-<div class="speech-bubble" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
-<div class="speech-bubble" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
-<div class="speech-bubble" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
-<div class="speech-bubble" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
-<div class="speech-bubble" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
-<div class="speech-bubble" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="Y.S.">Y.S.</div>
+                <div class="speech-bubble-list"><div class="speech-bubble member-icon" style="color: #4aa4bd;" onclick="openModal(this)" data-id="M.S.">M.S.</div>
+<div class="speech-bubble member-icon" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
+<div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
+<div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
+<div class="speech-bubble member-icon" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
+<div class="speech-bubble member-icon" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="Y.S.">Y.S.</div>
 </div>
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'><b>韓国料理屋さんでYAKINIKU!!</b><p>日時：7月21（月）19：00</p><p>場所：サムギョプサル専門店だ村</p></span><span class='lang-en'><b>YAKINIKU at a Korean Restaurant!!</b><p>Date & Time: July 21 (Mon) 19:00</p><p>Location: Samgyeopsal Specialty Restaurant "Damura"</p></span></div>
             </div>
         </section>
-        <section class="term-card summer">
+        <section class="term-card summer" data-href = "">
             <h2>Summer 2025</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>意味論（初級～中級）[特プロ]</span><span class='lang-en'>Semantics (From basic to intermediate)</span></h3>
                 <div><span class='lang-ja'><p>春学期の授業では、意味論や語用論がどうやって形作られてきたのか、その歴史や理論の土台をじっくり学んできました。この夏は、そこでそこでは取り扱えなかった各論に一歩進んで『実践モード』に突入します！今回のテーマは、動きや状態を表す語彙アスペクト。正確に精密に現象を捉えようとしてきた先人たちの知恵と工夫を学びましょう！</p></span><span class='lang-en'><p>In our Spring semester, we took a deep dive into the foundations and historical development of semantics and pragmatics. This summer, we move beyond the basics into "Practical Mode," tackling specific topics we couldn't cover before! Our current theme is lexical aspect, which characterizes states and movements. Together, let’s explore the wisdom and ingenious methods of our predecessors, who strove to capture linguistic phenomena with absolute precision.</p></span></div>
                 <hr class="divider">
                 <h3>◆ <span class="lang-ja">メンバー紹介</span><span class="lang-en">Members</span></h3>
-                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
-<div class="speech-bubble" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
-<div class="speech-bubble" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
-<div class="speech-bubble" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
-<div class="speech-bubble" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
-<div class="speech-bubble" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="Y.S.">Y.S.</div>
+                <div class="speech-bubble-list"><div class="speech-bubble member-icon" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
+<div class="speech-bubble member-icon" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
+<div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
+<div class="speech-bubble member-icon" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
+<div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="Y.S.">Y.S.</div>
 </div>
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'><b>温泉観光地で夏合宿！</b><p>合宿：9月28日（日）～9月30日（火）</p><p>場所：熱海</p><p>合宿担当：S. K.さん</p></span><span class='lang-en'><b>Summer Bootcamp/Retreat at a Hot Spring Resort!</b><p>Dates: Sep 28 (Sun)- 30 (Tue)</p><p>Location: Atami</p><p>Coordinator: S. K.</p></span></div>
             </div>
         </section>
-        <section class="term-card autumn">
+        <section class="term-card autumn" data-href = "">
             <h2>Fall 2025</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>動詞</span><span class='lang-en'>Verbs</span></h3>
@@ -1477,39 +1522,39 @@ While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptab
 他動詞のときは後ろ（目的語）にいた『花瓶』が、自動詞になると主語に出現！この二つ意味的にはどう違うのでしょうか？ほかにも構文が交替するパターンはたくさんあります。日本語と英語の違い、そして「人間がことばを話す仕組み」の不思議を一緒にのぞいてみましょう。</p></span><span class='lang-en'><p>To wrap up our summer, we’ve picked one of the great mysteries of linguistics: "Transitivity Alternation."<br>(1) The boy broke <font color="red">the vase</font>.  <br>(2) <font color="red">The vase</font> broke.<br>Notice how "the vase," which was positioned behind the verb (as the object) in the transitive sentence, appears as the subject in the intransitive one! How do these two differ semantically? There are many other patterns of constructional alternation. Let’s peer together into the differences between Japanese and English, and the fascinating "inner workings of how humans speak."</p></span></div>
                 <hr class="divider">
                 <h3>◆ <span class="lang-ja">メンバー紹介</span><span class="lang-en">Members</span></h3>
-                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #7fffd4;" onclick="openModal(this)" data-id="M.N.">M.N.</div>
-<div class="speech-bubble" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.U.">S.U.</div>
-<div class="speech-bubble" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
-<div class="speech-bubble" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
-<div class="speech-bubble" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
-<div class="speech-bubble" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
-<div class="speech-bubble" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
-<div class="speech-bubble" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
+                <div class="speech-bubble-list"><div class="speech-bubble member-icon" style="color: #7fffd4;" onclick="openModal(this)" data-id="M.N.">M.N.</div>
+<div class="speech-bubble member-icon" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.U.">S.U.</div>
+<div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
+<div class="speech-bubble member-icon" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
+<div class="speech-bubble member-icon" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
+<div class="speech-bubble member-icon" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
+<div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
 </div>
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'><b>年忘れのハラール料理体験！</b><p>合宿：12月26日（金）</p><p>場所：β2</p><p>料理講師：S. A. R.さん</p></span><span class='lang-en'><b>Year-End Halal Cooking Experience!</b><p>Event Date: December 26 (Fri)</p><p>Location: β2</p><p>Cooking Instructor: S. A. R.</p></span></div>
             </div>
         </section>
-        <section class="term-card winter">
+        <section class="term-card winter" data-href = "">
             <h2>Winter 2025</h2>
             <div class="card-content">
                 <h3>■ <span class="lang-ja">テーマ：</span><span class="lang-en">Topic: </span><span class='lang-ja'>お休み</span><span class='lang-en'>None</span></h3>
                 <div><span class='lang-ja'></span><span class='lang-en'></span></div>
                 <hr class="divider">
                 <h3>◆ <span class="lang-ja">メンバー紹介</span><span class="lang-en">Members</span></h3>
-                <div class="speech-bubble-list"><div class="speech-bubble" style="color: #7fffd4;" onclick="openModal(this)" data-id="M.N.">M.N.</div>
-<div class="speech-bubble" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.U.">S.U.</div>
-<div class="speech-bubble" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
-<div class="speech-bubble" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
-<div class="speech-bubble" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
-<div class="speech-bubble" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
-<div class="speech-bubble" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
-<div class="speech-bubble" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
-<div class="speech-bubble" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
+                <div class="speech-bubble-list"><div class="speech-bubble member-icon" style="color: #7fffd4;" onclick="openModal(this)" data-id="M.N.">M.N.</div>
+<div class="speech-bubble member-icon" style="color: #e6e6fa;" onclick="openModal(this)" data-id="S.A.R.">S.A.R.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.U.">S.U.</div>
+<div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #5f9ea0;" onclick="openModal(this)" data-id="K.K.">K.K.</div>
+<div class="speech-bubble member-icon" style="color: #6b8e23;" onclick="openModal(this)" data-id="K.H.">K.H.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
+<div class="speech-bubble member-icon" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
+<div class="speech-bubble member-icon" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
+<div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.S.">S.S.</div>
+<div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
 </div>
                 <hr class="divider"><h3>● <span class="lang-ja">イベント</span><span class="lang-en">Adventure/workshop</span></h3><div style="white-space: pre-wrap;"><span class='lang-ja'><b>2025年度フェアウェル企画！</b><p>日時：4月3日（金）13:00-</p><p>場所：横浜</p><p>主役：K. H.くん</p></span><span class='lang-en'><b>AY2025 Farewell Party!</b><p>Date & Time: April 3 (Fri) 13:00-</p><p>Location: Yokohama Red Brick Warehouse</p><p>Guest of Honor: K. H.</p></span></div>
             </div>
@@ -1618,7 +1663,8 @@ document.addEventListener("keydown", (e) => {
             { text: "25春", color: "#e57373" },
             { text: "25夏", color: "#81c784" },
             { text: "25秋", color: "#64b5f6" },
-            { text: "25冬", color: "#ffb74d" }
+            { text: "25冬", color: "#ffb74d" },
+            { text: "26春", color: "#ba68c8" }
         ]
     },
     "K.K.": {
@@ -1635,7 +1681,8 @@ document.addEventListener("keydown", (e) => {
             { text: "25春", color: "#e57373" },
             { text: "25夏", color: "#81c784" },
             { text: "25秋", color: "#64b5f6" },
-            { text: "25冬", color: "#ffb74d" }
+            { text: "25冬", color: "#ffb74d" },
+            { text: "26春", color: "#ba68c8" }
         ]
     },
     "S.K.": {
@@ -1652,7 +1699,8 @@ document.addEventListener("keydown", (e) => {
             { text: "25春", color: "#e57373" },
             { text: "25夏", color: "#81c784" },
             { text: "25秋", color: "#64b5f6" },
-            { text: "25冬", color: "#ffb74d" }
+            { text: "25冬", color: "#ffb74d" },
+            { text: "26春", color: "#ba68c8" }
         ]
     },
     "M.K.": {
@@ -1685,7 +1733,8 @@ document.addEventListener("keydown", (e) => {
         stamps: [
             { text: "25春", color: "#e57373" },
             { text: "25秋", color: "#81c784" },
-            { text: "25冬", color: "#64b5f6" }
+            { text: "25冬", color: "#64b5f6" },
+            { text: "26春", color: "#ffb74d" }
         ]
     },
     "S.S.": {
@@ -1733,7 +1782,8 @@ document.addEventListener("keydown", (e) => {
         stamps: [
             { text: "25夏", color: "#e57373" },
             { text: "25秋", color: "#81c784" },
-            { text: "25冬", color: "#64b5f6" }
+            { text: "25冬", color: "#64b5f6" },
+            { text: "26春", color: "#ffb74d" }
         ]
     },
     "S.U.": {
@@ -1748,7 +1798,8 @@ document.addEventListener("keydown", (e) => {
         color: "#3498db",
         stamps: [
             { text: "25秋", color: "#e57373" },
-            { text: "25冬", color: "#81c784" }
+            { text: "25冬", color: "#81c784" },
+            { text: "26春", color: "#64b5f6" }
         ]
     },
     "J.K.": {
@@ -1763,7 +1814,8 @@ document.addEventListener("keydown", (e) => {
         color: "#3498db",
         stamps: [
             { text: "25秋", color: "#e57373" },
-            { text: "25冬", color: "#81c784" }
+            { text: "25冬", color: "#81c784" },
+            { text: "26春", color: "#64b5f6" }
         ]
     },
     "M.N.": {
@@ -1778,7 +1830,8 @@ document.addEventListener("keydown", (e) => {
         color: "#7fffd4",
         stamps: [
             { text: "25秋", color: "#e57373" },
-            { text: "25冬", color: "#81c784" }
+            { text: "25冬", color: "#81c784" },
+            { text: "26春", color: "#64b5f6" }
         ]
     },
     "C.S.": {
@@ -1791,7 +1844,65 @@ document.addEventListener("keydown", (e) => {
         advice: "TBA",
         pic: "",
         color: "#3498db",
-        stamps: []
+        stamps: [
+            { text: "26春", color: "#e57373" }
+        ]
+    },
+    "Y.M.": {
+        name1: "Y.M.",
+        name2: "",
+        name3: "第2期生",
+        project: "TBA",
+        description: "TBA",
+        introduction: "TBA",
+        advice: "TBA",
+        pic: "",
+        color: "#3498db",
+        stamps: [
+            { text: "26春", color: "#e57373" }
+        ]
+    },
+    "S.Y.": {
+        name1: "S.Y.",
+        name2: "",
+        name3: "第2期生",
+        project: "TBA",
+        description: "TBA",
+        introduction: "TBA",
+        advice: "TBA",
+        pic: "",
+        color: "#3498db",
+        stamps: [
+            { text: "26春", color: "#e57373" }
+        ]
+    },
+    "H.S.": {
+        name1: "H.S.",
+        name2: "",
+        name3: "第2期生",
+        project: "TBA",
+        description: "TBA",
+        introduction: "TBA",
+        advice: "TBA",
+        pic: "",
+        color: "#3498db",
+        stamps: [
+            { text: "26春", color: "#e57373" }
+        ]
+    },
+    "T.F.": {
+        name1: "T.F.",
+        name2: "",
+        name3: "第2期生",
+        project: "TBA",
+        description: "TBA",
+        introduction: "TBA",
+        advice: "TBA",
+        pic: "",
+        color: "#3498db",
+        stamps: [
+            { text: "26春", color: "#e57373" }
+        ]
     }
 };
 
@@ -1979,6 +2090,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // すべてのタームカード（パネル）を取得
+    const termCards = document.querySelectorAll('.term-card');
+
+    termCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // 【重要】クリックされた要素、またはその親に 'member-icon' があるか判定
+            const isIconClicked = e.target.closest('.member-icon');
+
+            if (isIconClicked) {
+                // アイコンがクリックされた場合は、パネルのリンク移動は行わない
+                //（既存のプロフィール表示アニメーションが優先されます）
+                return;
+            }
+
+            // アイコン以外がクリックされた場合、data-href に設定したURLへジャンプ
+            const url = card.getAttribute('data-href');
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+
 </script>
 </body>
 </html>
