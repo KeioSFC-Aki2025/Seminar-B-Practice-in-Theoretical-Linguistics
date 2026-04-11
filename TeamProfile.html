@@ -142,15 +142,19 @@ body.is-en .lang-en { display: inline; }
 
 
 
-
-
-
-
 @media (max-width: 768px) {
 
-  .gnav-title { font-size: 1.8rem; }
+  .gnav-title { font-size: 1.3rem; } /* タイトルをさらに小さく */
 
-  .gnav-nav a { margin: 5px; }
+  .gnav-nav a { 
+
+      margin: 3px; 
+
+      font-size: 0.85rem; /* メニューの文字を小さく */
+
+      padding: 6px 12px;  /* ボタンの余白も少し詰める */
+
+  }
 
 }
 
@@ -364,11 +368,15 @@ body.is-en .lang-en { display: inline; }
 
             /* 中の文字も全体的に少し縮小 */
 
-            .card-content p, .card-content h3 {
+            
 
-                font-size: 0.95rem !important;
+            .card-content p, .card-content h3, .card-content div, .card-content span {
+
+                font-size: 0.85rem !important;
 
                 margin-bottom: 0.5rem !important;
+
+                line-height: 1.6 !important;
 
             }
 
@@ -1260,9 +1268,21 @@ body.is-en .lang-en { display: inline; }
 
     }
 
-	
+    
+
+    /* 6. モーダル内の文字をスマホ用に小さくする（追加） */
+
+    .modal-item, .modal-text, .modal-label {
+
+        font-size: 0.85rem !important;
+
+        line-height: 1.5 !important;
+
+    }
 
 }
+
+	
 
 
 
@@ -1422,6 +1442,7 @@ While we could imagine a "Fake Japanese" where (4) or (6) are perfectly acceptab
 <div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="J.K.">J.K.</div>
 <div class="speech-bubble member-icon" style="color: #dcdcdc;" onclick="openModal(this)" data-id="Y.U.">Y.U.</div>
 <div class="speech-bubble member-icon" style="color: #f8b500;" onclick="openModal(this)" data-id="S.K.">S.K.</div>
+<div class="speech-bubble member-icon" style="color: #afeeee;" onclick="openModal(this)" data-id="M.K.">M.K.</div>
 <div class="speech-bubble member-icon" style="color: #db7093;" onclick="openModal(this)" data-id="N.S.">N.S.</div>
 <div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="C.S.">C.S.</div>
 <div class="speech-bubble member-icon" style="color: #3498db;" onclick="openModal(this)" data-id="S.Y.">S.Y.</div>
@@ -1709,7 +1730,8 @@ document.addEventListener("keydown", (e) => {
             { text: "25春", color: "#e57373" },
             { text: "25夏", color: "#81c784" },
             { text: "25秋", color: "#64b5f6" },
-            { text: "25冬", color: "#ffb74d" }
+            { text: "25冬", color: "#ffb74d" },
+            { text: "26春", color: "#ba68c8" }
         ]
     },
     "N.S.": {
