@@ -1,0 +1,740 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Course Schedule Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #fcefee;
+  --card: #ffffff;
+  --muted: #5a4a42;
+  --accent: #d35400;
+  --accent-2: #ffb7c5;
+  --success: #16a34a;
+  --danger: #e74c3c;
+  --radius: 20px;
+  --muted-gray-accent: #d35400;
+  --muted-gray-light: #ffb7c5;
+  --muted-gray-bg: #fff0f5;     
+  --muted-gray-border: #fcf4e0; 
+  font-family: 'Zen Maru Gothic', 'Inter', system-ui, sans-serif;
+}
+/* =========================================
+   ナビゲーションバー（gnav）用のスタイル
+========================================= */
+.gnav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--muted-gray-bg, #fff0f5);
+    padding: 15px 30px;
+    border-bottom: 2px solid var(--accent-2, #ffb7c5);
+    font-family: 'Zen Maru Gothic', sans-serif;
+    color: var(--muted, #5a4a42);
+}
+.gnav-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--accent, #d35400);
+}
+.gnav-nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.gnav-nav a {
+    text-decoration: none;
+    color: var(--muted, #5a4a42);
+    font-weight: 600;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+.gnav-nav a:hover {
+    color: var(--accent, #d35400);
+}
+.gnav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.gnav-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 250px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 10px 0;
+    top: 100%;
+    left: 0;
+}
+.gnav-dropdown-content a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+.gnav-dropdown-content a:hover {
+    background-color: var(--muted-gray-bg, #fff0f5);
+}
+.gnav-dropdown:hover .gnav-dropdown-content {
+    display: block;
+}
+.lang-toggle {
+    background-color: var(--accent, #d35400);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s;
+}
+.lang-toggle:hover {
+    background-color: #e67e22;
+}
+/* =========================================
+   言語切り替え（日/英）用の表示設定
+========================================= */
+.lang-en { display: none !important; }
+.lang-ja { display: inline-block; }
+p.gnav-title.lang-ja { display: block; }
+body.en-mode .lang-ja { display: none !important; }
+body.en-mode .lang-en { display: inline-block !important; }
+body.en-mode h1.gnav-title.lang-en { display: block !important; }
+/* =========================================
+   ベースのスタイル設定
+========================================= */
+html,body{
+  height:100%; margin:0;
+  background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
+  color: var(--muted);
+  text-align: center;
+}
+p.lead{
+  margin: 4px 0 16px 0;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 1.15rem; line-height: 1.7;
+  color: var(--muted);
+  background-color: #ffffff;
+  padding: 15px 20px; border-radius: var(--radius);
+  border-left: 6px solid var(--accent);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  text-align: left;
+}
+/* =========================================
+   スケジュール表（テーブル）の設定
+========================================= */
+/* ▼ 表を囲むカードの幅をヘッダー(1000px)と揃える */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  padding: 20px;
+  max-width: 1000px;
+  width: 100%;
+  margin: 20px auto; 
+  box-sizing: border-box;
+}
+thead th{
+  position:sticky; top:0;
+  background:linear-gradient(180deg, #ffffff, #fff0f5);
+  padding:12px 14px; 
+  text-align: center;
+  font-size:0.95rem;
+  border-bottom:2px solid var(--accent-2);
+  color: var(--accent);
+}
+/* ▼ テーブル自体を幅100%に広げて枠に合わせる */
+table {
+  background-color: #ffffff;
+  margin: 0 auto;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+/* ▼ セル（td）の下に横線を引き、余白を持たせる */
+td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 15px 10px;
+  border-bottom: 1px solid var(--muted-gray-border); 
+}
+/* ▼ 最後の行は横線を消す */
+tr:last-child td {
+  border-bottom: none;
+}
+/* ▼ セクションタイトルの行（第1回などがあれば）の色付け */
+.section-title-row td {
+  background-color: var(--muted-gray-bg);
+  font-weight: bold;
+  border-bottom: 2px solid var(--accent-2);
+}
+/* ▼ 列ごとの幅の比率（合計が100%になるように調整） */
+.col1 { width: 8%; }       
+.col-date { width: 12%; }   
+.col-chapter { width: 15%; }
+.col2 { width: 35%; }       
+.col3 { width: 30%; } 
+/* =========================================
+   リストやボックスの設定
+========================================= */
+.homework-divider {
+  border: none;
+  border-top: 1px dashed var(--muted-gray-light);
+  margin: 10px 0;
+}
+ul.video-list {
+  list-style-position: inside;
+  padding: 0;
+}
+.info-row {
+  display: flex;
+  gap: 20px; 
+  margin-bottom: 16px;
+  text-align: left; 
+}
+.info-box {
+  flex: 1; 
+  margin: 0 !important; 
+  box-sizing: border-box;
+}
+header, .wrap {
+  max-width: 1000px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .info-row {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+    <div class="gnav-header">
+        <span class="lang-en"><h1 class="gnav-title">Akitaka Yamada's Website</h1></span>
+        <span class="lang-ja"><p class="gnav-title">山田彬尭のウェブサイトへようこそ！</p></span>
+        <div class="gnav-nav">
+            <a href="https://keiosfc-aki2025.github.io/Seminar/home.html"><span class="lang-ja">ホーム</span><span class="lang-en">HOME</span></a>
+            <a href="https://ayamada.sfc.keio.ac.jp/publications"><span class="lang-ja">研究業績</span><span class="lang-en">PUBLICATIONS</span></a>
+            <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
+            <div class="gnav-dropdown">
+                <a href="https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1"><span class="lang-ja">授業</span><span class="lang-en">TEACHING</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="#"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span></a>
+                    <a href="https://keiosfc-aki2025.github.io/syntax/schedule.html"><span class="lang-ja">統語論</span><span class="lang-en">Syntax (GIGA)</span></a>
+                    <a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html"><span class="lang-ja">意味論・語用論<br>学部・大学院併設</span> <span class="lang-en">Semantics and Pragmatics</span></a>
+                </div>
+            </div>
+            <div class="gnav-dropdown">
+                <a href="https://keiosfc-aki2025.github.io/Seminar/SeminarProfile.html"><span class="lang-ja">研究会（ゼミ）</span><span class="lang-en">SEMINARS</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/TeamProfile.html"><span class="lang-ja">理論言語学実践</span><span class="lang-en">Practice in Theoretical Linguistics</span></a>
+                    <a href="https://ayamada.sfc.keio.ac.jp/ldf2025spring"><span class="lang-ja">言語×DH×FW</span><span class="lang-en">Language, DH, and FW</span></a>
+                </div>
+            </div>
+            <div class="gnav-dropdown">
+                <a><span class="lang-ja">コーパス分析</span><span class="lang-en">Corpus Tools</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="http://keiosfc-aki2025.github.io/KeioSFC/keioSFC.html">KeioSFC</a>
+                    <a href="https://keiosfc-aki2025.github.io/KeioSFC/xmleditor.html">Keio XMLeditor</a>
+                </div>
+            </div>
+            <a href="https://ayamada.sfc.keio.ac.jp/contact"><span class="lang-ja">コンタクト</span><span class="lang-en">CONTACT</span></a>
+            <button id="lang-btn" class="lang-toggle">English</button>
+        </div>
+    </div>
+	
+    <header>
+      <div class="header-content">
+        <div class="course-header">
+            <h1 class="title">理論言語学実践</h1>
+            <p class="subtitle">（研究会B1）</p>
+            <div class="details">
+                2026年度春学期（Spring 2026）<br>
+                金曜日5限（Friday, the 5th period, tentatively）
+            </div>
+            <h2 class="short-title">格 Case</h2>
+        </div>
+        <p class="lead">
+          この研究会「理論言語学実践」では、学期ごとに言語学の様々な枠組みに触れ、対象を分析し、理論言語学における参加者の知識と分析力を高めることを目標とする。今学期は、格（Case）に関する諸論文を輪読しながら、先学期の「理論言語学入門」で学んだ内容が実践でどのように活かされているのかを理解し、自らがリサーチクエスチョンを立て、研究を遂行する力を育んでいく。
+		  <br>
+		  ※上記の理由から同授業で扱われた内容の理解が前提となるが、同程度の知識を有している、ないしは、極めて高い意欲と理解力を有する学生については特別に履修、ないしは、聴講を許可することもある。
+          </p>
+        <div class="info-row">
+          <p class="lead info-box">
+            <b>成績評価</b>：発表（50点）＋期末レポート（50点）<br>
+            <b>期末レポート提出期限（暫定）</b>：8月5日（水）18:00厳守
+          </p>
+          <p class="lead info-box">
+            <b>お知らせ</b>：<br>
+            <b>休講情報</b>：<font color ="red">5月22日（金）</font>は、学会出張のため休講<br>
+            <b>補講情報</b>：<font color ="blue">6月1日（金）</font>は、上記分の補講<br>	
+            <b>休講情報</b>：<font color ="red">6月19日（金）</font>は、学会出張のため休講<br>
+            <b>補講情報</b>：<font color ="blue">7月24日（金）</font>は、上記分の補講<br>
+            <b>夏合宿（特プロ／予定）</b>：8月～9月のいずれか（2泊3日、関東近郊を予定）
+          </p>
+        </div>
+    </header>
+  <div class="wrap">
+	※下記のスケジュールは暫定版で、今後変更されることがありうることを念頭において御覧ください。
+    <div class="card">
+		
+		<div class="card" style="margin-top:14px;padding:10px;color:var(--accent);font-weight:600" id="generalComment">
+			<p>Class on November 7 is cancelled.</p>
+		</div>
+        <template id="tableTemplate">
+    <table>
+        <colgroup>
+            <col class="col1">
+            <col class="col-date">
+            <col class="col-chapter"> 
+			<col class="col2">
+            <col class="col3">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="col1"></th>
+                <th class="col-date">Date</th>
+                <th class="col-chapter">Chapter</th> 
+				<th class="col2">Class</th>
+                <th class="col3">Docs & Homework</th>
+            </tr>
+        </thead>
+    <tbody></tbody>
+    </table>
+</template>
+        <div id="fullScheduleContainer" class="tablewrap"></div>
+    </div>
+  
+   <p></p>
+  </div>
+  <script>
+// =====================
+// Embedded scheduleData
+// =====================
+const scheduleData =
+[
+  {
+    "session": "Part",
+    "class": "Introduction"
+  },
+  {
+    "session": "1",
+    "chapter": "イントロ",
+    "class": "自己紹介とテーマ紹介<br>\n・役職決め：SA/TA、卒プロリーダー、合宿係、未来構想キャンプ",
+    "date": 46122,
+    "video": "論文1 Siewierska (2013)<https://wals.info/chapter/107>",
+    "deadlineHW": 46122,
+    "deadlineClass": 46122,
+    "place": "beta1<color = \"red\">",
+    "date2": "46122"
+  },
+  {
+    "session": "Part",
+    "class": "トピック1（態）"
+  },
+  {
+    "session": "2",
+    "chapter": "受動態１",
+    "class": "類型論的視点①／ベンガル語①<br>\n・担当者：Y. M.",
+    "date": 46129,
+    "video": "論文２ Ishikawa (2025) <https://www.jstage.jst.go.jp/article/gengo/169/0/169_31/_pdf>",
+    "deadlineHW": 46129,
+    "deadlineClass": 46129,
+    "place": "beta1",
+    "date2": "46129"
+  },
+  {
+    "session": "3",
+    "chapter": "受動態２",
+    "class": "ベンガル語②<br>\n・担当者：S. A. R.",
+    "date": 46136,
+    "video": "論文３影山 (2009) （別途配布）",
+    "deadlineHW": 46136,
+    "deadlineClass": 46136,
+    "place": "epsilon21<color = \"red\">",
+    "date2": "46136"
+  },
+  {
+    "session": "4",
+    "chapter": "受動態３",
+    "class": "日本語の受け身：出来事の受け身<br>「出来事を表す受身」<br>\n・担当者：全員",
+    "date": 46143,
+    "video": "論文４ 大堀 (2002) （別途配布）",
+    "deadlineHW": 46143,
+    "deadlineClass": 46143,
+    "place": "beta1",
+    "date2": "46143"
+  },
+  {
+    "session": "5",
+    "chapter": "受動態４",
+    "class": "認知言語学的視点：主語と受動態<br>「構文知識(II)：主語と受動態」<br>\n・担当者：全員",
+    "date": 46150,
+    "video": "論文５ 大野 (2025) （別途配布）",
+    "deadlineHW": 46150,
+    "deadlineClass": 46150,
+    "place": "beta1",
+    "date2": "46150"
+  },
+  {
+    "session": "6",
+    "chapter": "逆使役１",
+    "class": "北海道方言の逆使役<br>「北海道方言「ラサル」の非対格使役分析」<br>\n・担当者：全員",
+    "date": 46157,
+    "video": "中間発表（該当者）",
+    "deadlineHW": 46157,
+    "deadlineClass": 46157,
+    "place": "beta1",
+    "date2": "46157"
+  },
+  {
+    "format": "休講",
+    "date": 46164,
+    "deadlineHW": 46164,
+    "deadlineClass": 46164,
+    "place": "休講",
+    "date2": "46164"
+  },
+  {
+    "session": "Part",
+    "class": "中間発表会準備"
+  },
+  {
+    "session": "7",
+    "class": "中間発表（卒プロ１・２／修士生）<br>\n・担当者：",
+    "date": 46171,
+    "deadlineHW": 46171,
+    "deadlineClass": 46171,
+    "place": "beta1",
+    "date2": "46171"
+  },
+  {
+    "session": "8",
+    "class": "中間発表（卒プロ１・２／修士生）<br>\n・担当者：",
+    "format": "補講",
+    "date": 46178,
+    "video": "論文６林・田村 (2017) <https://www.ls-japan.org/modules/documents/LSJpapers/meeting/154/154F.pdf>",
+    "deadlineHW": 46178,
+    "deadlineClass": 46178,
+    "place": "beta1",
+    "date2": "46178"
+  },
+  {
+    "session": "Part",
+    "class": "態"
+  },
+  {
+    "session": "9",
+    "chapter": "逆使役２",
+    "class": "日本語（方言：北海道／沖縄）<br>「日本語の諸方言における『逆使役』」<br>\n・担当者：",
+    "date": 46185,
+    "video": "論文７ 青柳 (2024) （別途配布）",
+    "deadlineHW": 46185,
+    "deadlineClass": 46185,
+    "place": "beta1",
+    "date2": "46185"
+  },
+  {
+    "format": "休講",
+    "date": 46192,
+    "video": "論文８南部 (2007) <https://ls-japan.org/wp-content/uploads/2024/02/131_nambu.pdf>",
+    "deadlineHW": 46192,
+    "deadlineClass": 46192,
+    "place": "休講",
+    "date2": "46192"
+  },
+  {
+    "session": "10",
+    "chapter": "受動態５",
+    "class": "韓国語の受け身：歴史変化<br>\n・担当者：",
+    "date": 46199,
+    "deadlineHW": 46199,
+    "deadlineClass": 46199,
+    "place": "beta3<color = \"red\">",
+    "date2": "46199"
+  },
+  {
+    "session": "Part",
+    "class": "トピック２（ガ／ノ交替）"
+  },
+  {
+    "session": "11",
+    "chapter": "ガ／ノ交替",
+    "class": "日本語（標準語）<br>\n・担当者：",
+    "date": 46206,
+    "video": "論文８ 赤楚 (2025)<https://ngu.repo.nii.ac.jp/records/2000209>",
+    "deadlineHW": 46206,
+    "deadlineClass": 46206,
+    "place": "beta1",
+    "date2": "46206"
+  },
+  {
+    "session": "12",
+    "chapter": "ガ／ノ交替",
+    "class": "日本語（方言：大阪方言）<br>\n・担当者：",
+    "date": 46213,
+    "video": "論文9 森山ほか (2022) <https://www.jstage.jst.go.jp/article/gengo/161/0/161_35/_pdf>",
+    "deadlineHW": 46213,
+    "deadlineClass": 46213,
+    "place": "beta1",
+    "date2": "46213"
+  },
+  {
+    "session": "13",
+    "chapter": "ガ／ノ交替",
+    "class": "日本語（方言：肥筑方言）<br>\n・担当者：",
+    "date": 46220,
+    "video": "期末発表（1/2/3年生）",
+    "deadlineHW": 46220,
+    "deadlineClass": 46220,
+    "place": "beta1",
+    "date2": "46220"
+  },
+  {
+    "session": "Part",
+    "class": "期末発表大会"
+  },
+  {
+    "session": "14",
+    "class": "期末発表（1/2/3年生）※終了後、懇親会を予定",
+    "format": "補講",
+    "date": 46227,
+    "deadlineHW": 46227,
+    "deadlineClass": 46227,
+    "place": "補講dome<color=\"red\">",
+    "date2": "46227"
+  }
+]
+;
+const GeneralComment = "";
+// セクションタイトルの識別子を定義
+const SECTION_TITLE_IDENTIFIER = "Part";
+// =====================
+// UI elements
+// =====================
+const generalCommentDiv = document.getElementById('generalComment');
+const fullScheduleContainer = document.getElementById('fullScheduleContainer');
+const tableTemplate = document.getElementById('tableTemplate');
+// ----------------------
+// Utilities
+// ----------------------
+function parseDeadlineAsLocal(deadline) {
+  if (!deadline) return null;
+  let serial = Number(deadline);
+  if (isNaN(serial)) return null;
+  const date = new Date((serial - 25569) * 86400 * 1000);
+  date.setHours(23, 59, 59);
+  return date;
+}
+function parseAvailableFromAsLocal(dateStr){
+  if(!dateStr) return null;
+  let hour = 0; let minute = 0; let datePart = dateStr.trim();
+  const timeMatch = dateStr.match(/^(\d{1,2}):(\d{2})\s+(.*)$/);
+  if (timeMatch) {
+    hour = parseInt(timeMatch[1], 10);
+    minute = parseInt(timeMatch[2], 10);
+    datePart = timeMatch[3];
+  }
+  const dateParts = datePart.split('/').map(x=>parseInt(x,10));
+  if(dateParts.length < 3 || dateParts.some(isNaN)) return null;
+  const [m, d, y] = dateParts;
+  return new Date(y, m-1, d, hour, minute, 0);
+}
+function parseEntries(fieldStr){
+  if(!fieldStr) return [];
+  try {
+    const parts = fieldStr.split(/\n|,(?=\s)|,(?=\S)|, /).map(s=>s.trim()).filter(Boolean);
+    const entries = [];
+    const regex = /^(.*?)<([^>]+)>(?:\s*\[after\s+([^\]]+)\])?$/i;
+    parts.forEach(p=>{
+      const m = p.match(regex);
+      if(m){
+        entries.push({ label: m[1].trim(), url: m[2].trim(), availableAfterStr: m[3] ? m[3].trim() : null });
+      } else {
+        entries.push({label: p, url: null, availableAfterStr: null});
+      }
+    });
+    return entries;
+  } catch(e){
+    return [];
+  }
+}
+// ----------------------
+// Rendering
+// ----------------------
+function init(){
+  generalCommentDiv.textContent = GeneralComment;
+  const tableFull = tableTemplate.content.cloneNode(true).querySelector('table');
+  tableFull.id = 'scheduleTableFull';
+  fullScheduleContainer.appendChild(tableFull);
+  
+  renderFull(); 
+  // searchBox.addEventListener(...) の行は削除しました
+}
+function renderFull(){
+  const tbody = document.querySelector('#scheduleTableFull tbody');
+  if (!tbody) return;
+  tbody.innerHTML='';
+  // 検索用のコードを削除し、すべての予定をそのまま表示するように変更
+  scheduleData.forEach(item=>{
+    tbody.appendChild(createRow(item));
+  });
+}
+function createRow(item){
+  const frag = document.createDocumentFragment();
+  if (item.session === SECTION_TITLE_IDENTIFIER) {
+    const tr = document.createElement('tr');
+    tr.className = 'section-title-row';
+    const tdTitle = document.createElement('td');
+    tdTitle.colSpan = 5;
+    tdTitle.textContent = item.class;
+    tr.appendChild(tdTitle);
+    frag.appendChild(tr);
+    return frag;
+  }
+  const trMain = document.createElement('tr');
+  const today = new Date();
+  const deadlineDate = parseDeadlineAsLocal(item.deadlineClass);
+  const deadlineDate2 = parseDeadlineAsLocal(item.deadlineHW);
+  const hwClass = (deadlineDate && !isNaN(deadlineDate.getTime())) ? (today <= deadlineDate ? 'hw-due' : 'hw-past') : '';
+  
+  // Col 1: Session
+  const tdSession = document.createElement('td');
+  tdSession.textContent = item.session;
+  tdSession.className = "col1 " + hwClass;
+  
+  // Col 2: Date
+  const tdDate = document.createElement('td');
+  function formatExcelDate(serial) {
+    if (!serial || isNaN(Number(serial))) return serial;
+    const date = new Date((Number(serial) - 25569) * 86400 * 1000);
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+  }
+  const dateContent = formatExcelDate(item.date2 || item.date || '');
+  if (item.format) {
+    tdDate.innerHTML = `${dateContent}<br><br><span style="font-size:0.85em; color:var(--muted);">${item.format}</span>`;
+  } else {
+    tdDate.textContent = dateContent;
+  }
+  tdDate.className = "col-date " + hwClass;
+  
+  // Col 3: Chapter
+  const tdChapter = document.createElement('td');
+  tdChapter.innerHTML = item.chapter || ''; 
+  tdChapter.className = "col-chapter " + hwClass;
+  
+  // Col 4: Class
+  const tdClass = document.createElement('td');
+  tdClass.innerHTML = item.class || '';
+  tdClass.className = "col2 " + hwClass;
+  
+  // Col 5: Handout & Homework 統合セル
+  const tdDocs = document.createElement('td');
+  tdDocs.className = "col3 " + hwClass; 
+  
+  // -- 前半：Handout --
+  const handoutRaw = (item.handout || '').replace(/<br\s*\/?>/gi, '\n');
+  const handoutEntries = parseEntries(handoutRaw);
+  handoutEntries.forEach((entry, index) => {
+    if (index > 0) tdDocs.appendChild(document.createElement('br'));
+    if (entry.url) {
+      const a = document.createElement('a');
+      a.className = 'handout-link';
+      a.textContent = entry.label;
+      // 可否判定
+      let isAvail = true;
+      if (entry.availableAfterStr) {
+        const t = parseAvailableFromAsLocal(entry.availableAfterStr);
+        if (!t || isNaN(t.getTime()) || today < t) isAvail = false;
+      }
+      if (isAvail) {
+        a.href = entry.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      } else {
+        a.classList.add('disabled'); a.setAttribute('aria-disabled', 'true');
+        if (entry.availableAfterStr) a.title = `Available from ${entry.availableAfterStr}`;
+      }
+      tdDocs.appendChild(a);
+    } else {
+      tdDocs.appendChild(document.createTextNode(entry.label));
+    }
+  });
+  // -- 後半：Homework (Video) --
+  const videos = parseEntries(item.video);
+  if(videos.length > 0) {
+    // Handoutが存在していたら区切り線を引く
+    if(handoutEntries.length > 0) {
+      const hr = document.createElement('hr');
+      hr.className = "homework-divider";
+      tdDocs.appendChild(hr);
+    }
+    
+    // ラベル
+    const label = document.createElement('span');
+    label.className = "video-row-label";
+    label.textContent = "次回までの宿題:";
+    tdDocs.appendChild(label);
+    
+    // リンク群
+    const ul = document.createElement('ul'); ul.className='video-list';
+    videos.forEach(v=>{
+      const li = document.createElement('li');
+      if(v.url){
+        const anchor = document.createElement('a');
+        anchor.className='video-btn';
+        anchor.textContent=v.label;
+        let isAvail = true;
+        if (v.availableAfterStr) {
+          const t = parseAvailableFromAsLocal(v.availableAfterStr);
+          if (!t || isNaN(t.getTime()) || today < t) isAvail = false;
+        }
+        if (isAvail) {
+          anchor.href = v.url; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer';
+        } else {
+          anchor.classList.add('disabled'); anchor.setAttribute('aria-disabled', 'true');
+          if (v.availableAfterStr) anchor.title = `Available from ${v.availableAfterStr}`;
+        }
+        li.appendChild(anchor);
+      } else {
+        li.textContent=v.label;
+      }
+      ul.appendChild(li);
+    });
+    tdDocs.appendChild(ul);
+  }
+  [tdSession, tdDate, tdChapter, tdClass, tdDocs].forEach(td=>trMain.appendChild(td));
+  frag.appendChild(trMain);
+  
+  return frag;
+}
+document.addEventListener('DOMContentLoaded',init);
+// =========================================
+// 言語切り替え（English / 日本語）のロジック
+// =========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const langBtn = document.getElementById("lang-btn");
+    
+    if (langBtn) {
+        langBtn.addEventListener("click", () => {
+            // body要素に 'en-mode' クラスを付け外しする
+            document.body.classList.toggle("en-mode");
+            
+            // ボタンのテキストを切り替える
+            if (document.body.classList.contains("en-mode")) {
+                langBtn.textContent = "日本語"; // 英語モード時は「日本語」に戻すボタンにする
+            } else {
+                langBtn.textContent = "English"; // 日本語モード時は「English」にする
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
