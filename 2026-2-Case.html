@@ -1271,36 +1271,6 @@ function openSubTab(evt, subName) {
   
 </div>
 </div>
-<div id="study" class="tab-content">
-  <div class="study">
-    <span class="main-text">この授業の予習は</span><br>
-   （たぶん、それなりに） 「<span class="alert-text">重たい</span>」です<br>
-   <br>
-   （でも、学期を終えるとその分、大きな<span class = "highlight"><b>充足感</b></span>が待っている（はず）！）
-  </div>
-  <div class="study-grid">
-    <div class="study-item">
-      <h3>📺 （１）講義ビデオ（毎週）</h3>
-      <p>予習用ビデオは毎週<b>1時間〜1時間半</b>。内容を正確に把握するためのインプット作業です。</p>
-    </div>
-    <div class="study-item">
-      <h3>✍️ （２）提出課題（毎週）</h3>
-      <p>ビデオ内容の理解度を確認するためのアウトプット。知識を定着させる重要なステップです。</p>
-    </div>
-  </div>
-  <div class="study-notice">
-    <div class="icon">⏰</div>
-    <div class="text">
-      ノート作成や休憩時間を考慮すると、確実に<br>
-      <b>毎週2時間ほど</b>の学習時間を確保することが不可欠です。
-    </div>
-  </div>
-   
-    
-</div>
-<div id="news" class="tab-content">
-  
-</div>
   
   
   
@@ -1381,32 +1351,35 @@ function openSubTab(evt, subName) {
   <div class="caution-grid">
     
     <div class="caution-card border-red">
-      <div class="card-header">
-        <div class="card-icon">📖</div>
-        <span class="subject-title"><span class="badge-important"><span class="lang-ja">重要</span><span class="lang-en">Important</span></span>
-          <span class="lang-ja">基礎力（言語学の履修歴）</span>
-          <span class="lang-en">Course requirement</span>
-        </span>
-      </div>
-      <div class="card-content">
-        <div class="lang-ja">
-          下記の授業のいずれかを履修し、<span style="color: red; font-weight: bold;">B以上の成績</span>を修めていること:
-          <ul class="bullet-list">
-            <li>理論言語学入門（統語論）</li>
-            <li>理論言語学入門（意味論・語用論）</li>
-          </ul>
-          ※過去の授業の履修は、原則必須要件ですが、意欲のある学生や、上記以外の言語学の授業の履修、また授業に代わる有意義な経験、体験を持っている学生は、例外的に受講を認めることがあります。
-        </div>
-        <div class="lang-en">
-          Must have taken any of the following courses and earned a <span style="color: red; font-weight: bold;">grade of B or higher</span>:
-          <ul class="bullet-list">
-            <li>Introduction to Theoretical Linguistics (Syntax)</li>
-            <li>Introduction to Theoretical Linguistics (Semantics and Pragmatics)</li>
-          </ul>
-          *In principle, prior completion of these courses is required. However, exceptions may be made for highly motivated students, those who have taken other linguistics courses, or those with meaningful substitute experiences.
-        </div>
-      </div>
+  <div class="card-header">
+    <div class="card-icon">📖</div>
+    <span class="subject-title">
+      <span class="badge-important"><span class="lang-ja">重要</span><span class="lang-en">Important</span></span>
+      <span class="lang-ja">基礎力（言語学の履修歴）</span>
+      <span class="lang-en">Course requirement</span>
+    </span>
+  </div>
+  <div class="card-content">
+    <div class="lang-ja">
+      下記の授業のいずれかを履修し、<span style="color: red; font-weight: bold;">B以上の成績</span>を修めていること:
+      <ul class="bullet-list">
+        <li>理論言語学入門（統語論）</li>
+        <li>理論言語学入門（意味論・語用論）</li>
+      </ul>
+      ※1：内容としては「<span style="color: red;">理論言語学入門（意味論・語用論）</span>」で扱えなかった発展トピックを掘り下げる予定である。<br>
+      ※2：過去の授業の履修は、原則必須要件ですが、意欲のある学生や、上記以外の言語学の授業の履修、また授業に代わる有意義な経験、体験を持っている学生は、例外的に受講を認めることがあります。
     </div>
+    <div class="lang-en">
+      Must have taken any of the following courses and earned a <span style="color: red; font-weight: bold;">grade of B or higher</span>:
+      <ul class="bullet-list">
+        <li>Introduction to Theoretical Linguistics (Syntax)</li>
+        <li>Introduction to Theoretical Linguistics (Semantics and Pragmatics)</li>
+      </ul>
+      *1: The course plan is to delve into advanced topics that could not be covered in "<span style="color: red;">Introduction to Theoretical Linguistics (Semantics and Pragmatics)</span>".<br>
+      *2: In principle, prior completion of these courses is required. However, exceptions may be made for highly motivated students, those who have taken other linguistics courses, or those with meaningful substitute experiences.
+    </div>
+  </div>
+</div>
     
     <div class="caution-card border-blue">
       <div class="card-header">
@@ -1420,7 +1393,7 @@ function openSubTab(evt, subName) {
         <div class="lang-ja">
           <ul class="bullet-list">
             <li><b>継続的な出席</b>：出欠は取りませんが、内容の積み上げが強いため、欠席すると復帰が難しくなります。研究会というチームで学びを深めていきますので、やむを得ない状況を除き、研究会所属に出席は前提です。</li>
-            <li><b>輪読の予習</b>：毎週かなりの分量の論考を輪読します。担当回にはレジュメなどを用意して発表をお願いしますし、担当回でない時にも、当然、論文に目を通し、論点を整理し、質問点を準備して研究会に望む必要があります。</li>
+            <li><b>輪読の予習</b>：毎週かなりの分量の論考を輪読します。担当回にはレジュメなどを用意して発表をお願いしますし、担当回でない時にも、当然、論文に目を通し、論点を整理し、質問点を準備して研究会に臨む必要があります。</li>
           </ul>
         </div>
         <div class="lang-en">
